@@ -1,0 +1,88 @@
+﻿import React from 'react';
+import { Card } from './ui/card';
+import { Button } from './ui/button';
+import { ExternalLink, Github } from 'lucide-react';
+import { projects } from '../data/mock';
+
+const Projects = () => {
+  return (
+    <section id="projects" className="py-20 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Featured Projects</h2>
+          <div className="w-24 h-1 bg-amber-500 mx-auto"></div>
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+            Here are some of my recent projects showcasing my skills in AI/ML, web development, and data analysis.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project) => (
+            <Card
+              key={project.id}
+              className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col"
+            >
+              <div className="p-6 flex-1 flex flex-col">
+                <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-amber-600 transition-colors">
+                  {project.title}
+                </h3>
+                
+                <p className="text-gray-700 mb-4 flex-1">{project.description}</p>
+                
+                <div className="mb-4">
+                  <h4 className="text-sm font-semibold text-slate-700 mb-2">Key Highlights:</h4>
+                  <ul className="space-y-1">
+                    {project.highlights.map((highlight, index) => (
+                      <li key={index} className="text-sm text-gray-600 flex items-start">
+                        <span className="text-amber-500 mr-2">•</span>
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-2">
+                    {project.technologies.map((tech, index) => (
+                      <span
+                        key={index}
+                        className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-medium rounded-full hover:bg-amber-100 hover:text-amber-700 transition-colors"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="flex gap-3 mt-auto">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 border-amber-500 text-amber-600 hover:bg-amber-500 hover:text-white transition-colors"
+                    onClick={() => window.open(project.github, '_blank')}
+                  >
+                    <Github className="w-4 h-4 mr-2" />
+                    Code
+                  </Button>
+                  {project.demo && (
+                    <Button
+                      size="sm"
+                      className="flex-1 bg-amber-500 hover:bg-amber-600 text-white"
+                      onClick={() => window.open(project.demo, '_blank')}
+                    >
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Demo
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Projects;
+
