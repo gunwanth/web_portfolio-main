@@ -128,13 +128,12 @@ export const projects = [
     description: "Full-stack Sweet Shop Management System providing inventory management, purchasing, authentication, and search capabilities. Features admin panels for stock management and customer dashboards for browsing and purchasing sweets.",
     technologies: ["Node.js", "Express.js", "TypeScript", "Prisma ORM", "PostgreSQL", "React", "Vite", "JWT Authentication", "Jest", "Supertest"],
     highlights: [
-      "Admin panel for inventory management (add, delete, restock sweets)",
-      "Customer dashboard with real-time inventory tracking",
-      "Advanced search by name, category, and price range",
-      "Secure JWT-based authentication and authorization",
-      "Automatic stock validation and purchase disabling",
-      "Comprehensive test coverage with Jest & Supertest",
-      "CORS-enabled for seamless frontend-backend communication"
+      "Admin: add / delete / restock sweets",
+      "Customer dashboard",
+      "Search by name / category / price",
+      "JWT-based authentication",
+      "Auto-disable purchase when out of stock",
+      "Tests with Jest & Supertest"
     ],
     github: "https://github.com/gunwanth/sweet-shop-management-system",
     demo: null
