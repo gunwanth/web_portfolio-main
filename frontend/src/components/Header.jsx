@@ -25,24 +25,40 @@ const Header = () => {
   const handleDownloadResume = async () => {
     try {
       // Prefer CRA `REACT_APP_BACKEND_URL` env; fall back to relative path.
-      // Using a relative path ("") lets the dev server proxy or same-origin
-      // backend handle the request during development.
       const BACKEND_URL =
         (typeof process !== "undefined" && process.env && process.env.REACT_APP_BACKEND_URL) || "";
 
-      const response = await fetch(
-        `${BACKEND_URL}/api/resume/download`
-      );
+      const url = `${BACKEND_URL}/api/resume/download`;
+      console.log("Downloading resume from:", url);
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/pdf',
+        },
+        credentials: 'include'
+      });
+
+      console.log("Response status:", response.status);
+      console.log("Response headers:", {
+        contentType: response.headers.get('content-type'),
+        contentDisposition: response.headers.get('content-disposition'),
+        contentLength: response.headers.get('content-length'),
+      });
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
         throw new Error(`Server returned ${response.status}: ${response.statusText}`);
       }
 
       const blob = await response.blob();
+      console.log("Blob received - Type:", blob.type, "Size:", blob.size);
       
       // Validate that we actually got a PDF
       if (!blob.type.includes("pdf") && !blob.type.includes("application/octet-stream")) {
         console.error("Invalid blob type:", blob.type);
+        console.error("First 100 chars of blob:", await blob.text().then(t => t.substring(0, 100)));
         throw new Error("Server did not return a PDF file. Received: " + blob.type);
       }
       
@@ -67,9 +83,9 @@ const Header = () => {
       }
       
       // Fallback: download via blob URL
-      const url = window.URL.createObjectURL(blob);
+      const objectUrl = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
+      a.href = objectUrl;
       a.download = "Gunvanth_Madabattula_Resume.pdf";
       
       // Ensure the link is in the document for iOS compatibility
@@ -79,7 +95,7 @@ const Header = () => {
       setTimeout(() => {
         a.click();
         document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
+        window.URL.revokeObjectURL(objectUrl);
       }, 100);
     } catch (error) {
       console.error("Error downloading resume:", error);
