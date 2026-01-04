@@ -125,8 +125,8 @@ export const projects = [
   {
     id: 6,
     title: "Sweet Shop Management",
-    description: "Full-stack inventory and e-commerce system with admin panels for stock management and customer dashboards for purchasing sweets.",
-    technologies: ["Prisma ORM", "PostgreSQL", "JWT Authentication", "Jest"],
+    description: "Full-stack inventory system with Node.js, React, Prisma ORM, PostgreSQL, and JWT authentication.",
+    technologies: ["Node.js", "Express", "React", "Prisma ORM", "PostgreSQL", "JWT", "Jest"],
     highlights: [
       "Admin: add / delete / restock sweets",
       "JWT-based authentication",
