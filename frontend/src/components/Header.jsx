@@ -35,15 +35,21 @@ const Header = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to download resume");
+        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
       }
 
       const blob = await response.blob();
       
+      // Validate that we actually got a PDF
+      if (!blob.type.includes("pdf") && !blob.type.includes("application/octet-stream")) {
+        console.error("Invalid blob type:", blob.type);
+        throw new Error("Server did not return a PDF file. Received: " + blob.type);
+      }
+      
       // Check if we're on a mobile device
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       
-      if (isMobile && navigator.share && blob.type === "application/pdf") {
+      if (isMobile && navigator.share && blob.type.includes("pdf")) {
         // Try native share on mobile first
         try {
           const file = new File([blob], "Gunvanth_Madabattula_Resume.pdf", { type: "application/pdf" });
@@ -77,7 +83,7 @@ const Header = () => {
       }, 100);
     } catch (error) {
       console.error("Error downloading resume:", error);
-      alert("Failed to download resume. Please try again.");
+      alert("Failed to download resume: " + error.message);
     }
   };
 
