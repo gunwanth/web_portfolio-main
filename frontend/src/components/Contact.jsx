@@ -8,7 +8,8 @@ import { personalInfo } from '../data/mock';
 import { toast } from '../hooks/use-toast';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+// Default to relative path when `REACT_APP_BACKEND_URL` is not set
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 const API = `${BACKEND_URL}/api`;
 
 const Contact = () => {
@@ -32,8 +33,13 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    try {
-      const response = await axios.post(`${API}/contact`, formData);
+      try {
+        // If a BACKEND_URL is configured use that local API, otherwise
+        // hit the backend proxy endpoint which forwards to the external API
+        // server-side (avoids browser CORS issues).
+        const submitUrl = BACKEND_URL ? `${API}/contact` : `/api/external-contact`;
+
+        const response = await axios.post(submitUrl, formData);
       
       if (response.data.success) {
         toast({

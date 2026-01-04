@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 from dotenv import load_dotenv
 from pathlib import Path
+import httpx
 
 # Load environment variables
 ROOT_DIR = Path(__file__).parent.parent
@@ -111,3 +112,30 @@ async def submit_contact_form(contact: ContactSubmissionCreate, request: Request
             status_code=500,
             detail="Failed to process contact form. Please try again later."
         )
+
+
+@router.post("/external-contact", response_model=ContactResponse)
+async def forward_to_external_api(contact: ContactSubmissionCreate):
+    """
+    Proxy endpoint to forward contact submissions to an external API.
+    Useful when the external API doesn't allow browser CORS but can accept
+    server-side requests.
+    """
+    external_url = os.environ.get(
+        "EXTERNAL_CONTACT_URL",
+        "https://career-profile-317.preview.emergentagent.com/api/contact",
+    )
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            resp = await client.post(external_url, json=contact.model_dump())
+
+        if resp.status_code >= 200 and resp.status_code < 300:
+            return ContactResponse(success=True, message="Message forwarded to external service.")
+        else:
+            logger.error(f"External API returned {resp.status_code}: {resp.text}")
+            raise HTTPException(status_code=502, detail="External service error")
+
+    except httpx.RequestError as e:
+        logger.error(f"Error contacting external API: {str(e)}")
+        raise HTTPException(status_code=502, detail="Failed to contact external service")
