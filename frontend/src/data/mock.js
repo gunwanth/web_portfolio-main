@@ -10,7 +10,7 @@ export const personalInfo = {
   linkedin: "https://www.linkedin.com/in/gunvanth-m/",
   github: "https://github.com/gunwanth",
   resumeUrl: "/resume/gunvanth_resume.pdf",
-  about: "Dynamic 4th-year BTech student specializing in Computer Science with AI/ML at Gayatri Vidya Parishad College of Engineering. Passionate about innovation in programming, data analysis, and artificial intelligence. Committed to continuous learning and eager to apply technical expertise in creative, problem-solving environments to drive meaningful change in the tech industry."
+  about: "AI/ML Developer specializing in Python, React, and Google Cloud technologies. Built 3+ full-stack AI applications including a disease prediction model with 85%+ accuracy. Experienced in RESTful APIs, data analysis, and Power BI dashboards and well-defined Deployment using Azure CI/CD pipelines"
 };
 
 export const experiences = [
@@ -120,6 +120,23 @@ export const projects = [
       "Portfolio tracking and performance metrics"
     ],
     github: "https://github.com/gunwanth/stock_tracker",
+    demo: null
+  },
+  {
+    id: 6,
+    title: "🍬 Sweet Shop Management System",
+    description: "Full-stack Sweet Shop Management System providing inventory management, purchasing, authentication, and search capabilities. Features admin panels for stock management and customer dashboards for browsing and purchasing sweets.",
+    technologies: ["Node.js", "Express.js", "TypeScript", "Prisma ORM", "PostgreSQL", "React", "Vite", "JWT Authentication", "Jest", "Supertest"],
+    highlights: [
+      "Admin panel for inventory management (add, delete, restock sweets)",
+      "Customer dashboard with real-time inventory tracking",
+      "Advanced search by name, category, and price range",
+      "Secure JWT-based authentication and authorization",
+      "Automatic stock validation and purchase disabling",
+      "Comprehensive test coverage with Jest & Supertest",
+      "CORS-enabled for seamless frontend-backend communication"
+    ],
+    github: "https://github.com/gunwanth/sweet-shop-management-system",
     demo: null
   }
 ];
