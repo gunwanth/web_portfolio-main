@@ -58,6 +58,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def home():
+    return {
+        "status": "ok",
+        "message": "Gunvanth Portfolio API is running"
+    }
+
 # --------------------------------------------------
 # ✅ GLOBAL OPTIONS HANDLER (CRITICAL FIX)
 # --------------------------------------------------
