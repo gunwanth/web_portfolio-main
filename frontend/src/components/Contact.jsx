@@ -9,8 +9,11 @@ import { toast } from '../hooks/use-toast';
 import axios from 'axios';
 
 // Default to relative path when `REACT_APP_BACKEND_URL` is not set
+// Use relative `/api` by default so the dev server can proxy requests to the
+// backend and avoid CORS/connection issues. If `REACT_APP_BACKEND_URL` is set
+// to an absolute URL, use that instead (useful for production builds).
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
-const API = `${BACKEND_URL}/api`;
+const API = BACKEND_URL ? `${BACKEND_URL}/api` : "/api";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -34,11 +37,7 @@ const Contact = () => {
     setIsSubmitting(true);
     
       try {
-        // If a BACKEND_URL is configured use that local API, otherwise
-        // hit the backend proxy endpoint which forwards to the external API
-        // server-side (avoids browser CORS issues).
-        const submitUrl = BACKEND_URL ? `${API}/contact` : `/api/external-contact`;
-
+        const submitUrl = `${API}/contact`;
         const response = await axios.post(submitUrl, formData);
       
       if (response.data.success) {

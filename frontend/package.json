@@ -60,6 +60,7 @@
         "build": "craco build",
         "start": "craco start"
     },
+    "proxy": "http://127.0.0.1:8001",
     "browserslist": {
         "production": [
             ">0.2%",
