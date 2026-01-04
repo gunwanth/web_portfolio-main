@@ -24,47 +24,31 @@ const Header = () => {
 
   const handleDownloadResume = async () => {
     try {
-      // Prefer CRA `REACT_APP_BACKEND_URL` env; fall back to relative path.
       const BACKEND_URL =
         (typeof process !== "undefined" && process.env && process.env.REACT_APP_BACKEND_URL) || "";
 
-      const url = `${BACKEND_URL}/api/resume/download`;
-      console.log("Downloading from:", url);
-
-      const response = await fetch(url);
-
-      console.log("Response status:", response.status);
-      console.log("Content-Type:", response.headers.get('content-type'));
+      const response = await fetch(
+        `${BACKEND_URL}/api/resume/download`
+      );
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Error response:", errorText);
-        throw new Error(`Server returned ${response.status}`);
+        throw new Error("Failed to download resume");
       }
 
       const blob = await response.blob();
-      console.log("Received blob:", { type: blob.type, size: blob.size });
+      const url = window.URL.createObjectURL(blob);
 
-      // Check blob type
-      if (!blob.type.includes("pdf")) {
-        const text = await blob.text();
-        console.error("Not a PDF, received:", text.substring(0, 200));
-        throw new Error("Server returned: " + blob.type);
-      }
-      
-      // Download
-      const objectUrl = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = objectUrl;
+      a.href = url;
       a.download = "Gunvanth_Madabattula_Resume.pdf";
       document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(objectUrl);
-      
+      a.remove();
+
+      window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Download error:", error);
-      alert("Failed to download resume: " + error.message);
+      console.error("Error downloading resume:", error);
+      alert("Failed to download resume");
     }
   };
 
