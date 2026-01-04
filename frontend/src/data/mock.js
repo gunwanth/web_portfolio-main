@@ -164,7 +164,7 @@ export const education = [
     degree: "Bachelor of Technology in Computer Science Engineering (AI/ML)",
     institution: "Gayatri Vidya Parishad College of Engineering",
     period: "2022 - 2026",
-    grade: "8.2 CGPA"
+    grade: "7.8 CGPA"
   },
   {
     id: 2,
