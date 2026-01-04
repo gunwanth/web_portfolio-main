@@ -39,19 +39,45 @@ const Header = () => {
       }
 
       const blob = await response.blob();
+      
+      // Check if we're on a mobile device
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      
+      if (isMobile && navigator.share && blob.type === "application/pdf") {
+        // Try native share on mobile first
+        try {
+          const file = new File([blob], "Gunvanth_Madabattula_Resume.pdf", { type: "application/pdf" });
+          await navigator.share({
+            files: [file],
+            title: "Gunvanth's Resume",
+          });
+          return;
+        } catch (shareError) {
+          // User cancelled share or share not available, fall through to download
+          if (shareError.name !== "AbortError") {
+            console.log("Share failed, falling back to download");
+          }
+        }
+      }
+      
+      // Fallback: download via blob URL
       const url = window.URL.createObjectURL(blob);
-
       const a = document.createElement("a");
       a.href = url;
       a.download = "Gunvanth_Madabattula_Resume.pdf";
+      
+      // Ensure the link is in the document for iOS compatibility
       document.body.appendChild(a);
-      a.click();
-      a.remove();
-
-      window.URL.revokeObjectURL(url);
+      
+      // Add a small delay for iOS to ensure proper handling
+      setTimeout(() => {
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 100);
     } catch (error) {
       console.error("Error downloading resume:", error);
-      alert("Failed to download resume");
+      alert("Failed to download resume. Please try again.");
     }
   };
 

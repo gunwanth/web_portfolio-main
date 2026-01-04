@@ -26,7 +26,13 @@ async def download_resume():
         return FileResponse(
             path=str(RESUME_FILE),
             media_type="application/pdf",
-            filename="Gunvanth_Madabattula_Resume.pdf"
+            filename="Gunvanth_Madabattula_Resume.pdf",
+            headers={
+                "Content-Disposition": "attachment; filename=Gunvanth_Madabattula_Resume.pdf",
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0"
+            }
         )
     
     except Exception as e:
