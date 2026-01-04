@@ -29,76 +29,41 @@ const Header = () => {
         (typeof process !== "undefined" && process.env && process.env.REACT_APP_BACKEND_URL) || "";
 
       const url = `${BACKEND_URL}/api/resume/download`;
-      console.log("Downloading resume from:", url);
+      console.log("Downloading from:", url);
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/pdf',
-        },
-        credentials: 'include'
-      });
+      const response = await fetch(url);
 
       console.log("Response status:", response.status);
-      console.log("Response headers:", {
-        contentType: response.headers.get('content-type'),
-        contentDisposition: response.headers.get('content-disposition'),
-        contentLength: response.headers.get('content-length'),
-      });
+      console.log("Content-Type:", response.headers.get('content-type'));
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Error response:", errorText);
-        throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+        throw new Error(`Server returned ${response.status}`);
       }
 
       const blob = await response.blob();
-      console.log("Blob received - Type:", blob.type, "Size:", blob.size);
-      
-      // Validate that we actually got a PDF
-      if (!blob.type.includes("pdf") && !blob.type.includes("application/octet-stream")) {
-        console.error("Invalid blob type:", blob.type);
-        console.error("First 100 chars of blob:", await blob.text().then(t => t.substring(0, 100)));
-        throw new Error("Server did not return a PDF file. Received: " + blob.type);
+      console.log("Received blob:", { type: blob.type, size: blob.size });
+
+      // Check blob type
+      if (!blob.type.includes("pdf")) {
+        const text = await blob.text();
+        console.error("Not a PDF, received:", text.substring(0, 200));
+        throw new Error("Server returned: " + blob.type);
       }
       
-      // Check if we're on a mobile device
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      
-      if (isMobile && navigator.share && blob.type.includes("pdf")) {
-        // Try native share on mobile first
-        try {
-          const file = new File([blob], "Gunvanth_Madabattula_Resume.pdf", { type: "application/pdf" });
-          await navigator.share({
-            files: [file],
-            title: "Gunvanth's Resume",
-          });
-          return;
-        } catch (shareError) {
-          // User cancelled share or share not available, fall through to download
-          if (shareError.name !== "AbortError") {
-            console.log("Share failed, falling back to download");
-          }
-        }
-      }
-      
-      // Fallback: download via blob URL
+      // Download
       const objectUrl = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = objectUrl;
       a.download = "Gunvanth_Madabattula_Resume.pdf";
-      
-      // Ensure the link is in the document for iOS compatibility
       document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(objectUrl);
       
-      // Add a small delay for iOS to ensure proper handling
-      setTimeout(() => {
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(objectUrl);
-      }, 100);
     } catch (error) {
-      console.error("Error downloading resume:", error);
+      console.error("Download error:", error);
       alert("Failed to download resume: " + error.message);
     }
   };
