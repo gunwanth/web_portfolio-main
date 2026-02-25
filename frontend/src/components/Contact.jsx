@@ -8,12 +8,7 @@ import { personalInfo } from '../data/mock';
 import { toast } from '../hooks/use-toast';
 import axios from 'axios';
 
-// Default to relative path when `REACT_APP_BACKEND_URL` is not set
-// Use relative `/api` by default so the dev server can proxy requests to the
-// backend and avoid CORS/connection issues. If `REACT_APP_BACKEND_URL` is set
-// to an absolute URL, use that instead (useful for production builds).
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
-const API = BACKEND_URL ? `${BACKEND_URL}/api` : "/api";
+const API = '/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -35,30 +30,32 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-      try {
-        const submitUrl = `${API}/contact`;
-        const response = await axios.post(submitUrl, formData);
-      
+
+    try {
+      const submitUrl = `${API}/contact`;
+      const response = await axios.post(submitUrl, formData);
+
       if (response.data.success) {
+        const emailSent = response.data.email_sent !== false;
         toast({
-          title: "Message Sent!",
+          title: emailSent ? 'Message Sent!' : 'Message Saved',
           description: response.data.message,
+          variant: emailSent ? 'default' : 'destructive'
         });
         setFormData({ name: '', email: '', subject: '', message: '' });
       }
     } catch (error) {
       console.error('Error submitting contact form:', error);
-      
-      let errorMessage = "Failed to send message. Please try again.";
+
+      let errorMessage = 'Failed to send message. Please try again.';
       if (error.response?.status === 429) {
-        errorMessage = "Too many requests. Please try again in an hour.";
+        errorMessage = 'Too many requests. Please try again in an hour.';
       }
-      
+
       toast({
-        title: "Error",
+        title: 'Error',
         description: errorMessage,
-        variant: "destructive"
+        variant: 'destructive'
       });
     } finally {
       setIsSubmitting(false);
@@ -80,7 +77,7 @@ const Contact = () => {
           {/* Contact Information */}
           <div className="space-y-6">
             <h3 className="text-2xl font-bold text-slate-900 mb-6">Contact Information</h3>
-            
+
             <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-amber-100 rounded-lg">

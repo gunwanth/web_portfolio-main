@@ -3,22 +3,35 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 import logging
+from pathlib import Path
+from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
+
 class EmailService:
     def __init__(self):
+        self._load_config()
+
+    def _load_config(self):
+        """Load SMTP config from backend .env and process environment."""
+        env_path = Path(__file__).parent.parent / ".env"
+        load_dotenv(env_path)
+
         self.smtp_host = os.environ.get('SMTP_HOST', 'smtp.gmail.com')
         self.smtp_port = int(os.environ.get('SMTP_PORT', 587))
-        self.smtp_user = os.environ.get('SMTP_USER', '')
-        self.smtp_password = os.environ.get('SMTP_PASSWORD', '')
-        self.recipient_email = os.environ.get('RECIPIENT_EMAIL', 'gunvanth752004@gmail.com')
+        self.smtp_user = os.environ.get('SMTP_USER', '').strip()
+        self.smtp_password = os.environ.get('SMTP_PASSWORD', '').strip()
+        self.recipient_email = os.environ.get('RECIPIENT_EMAIL', 'gunvanth752004@gmail.com').strip()
 
     def send_contact_email(self, name: str, email: str, subject: str, message: str) -> bool:
         """
         Send contact form submission via email
         """
         try:
+            # Refresh config each call so runtime .env changes are applied.
+            self._load_config()
+
             # Create message
             msg = MIMEMultipart('alternative')
             msg['From'] = self.smtp_user
@@ -92,5 +105,6 @@ class EmailService:
         except Exception as e:
             logger.error(f"Failed to send email: {str(e)}")
             return False
+
 
 email_service = EmailService()

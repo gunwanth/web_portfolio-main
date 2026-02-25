@@ -27,26 +27,28 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+
 def check_rate_limit(ip_address: str) -> bool:
     """
     Check if the IP has exceeded the rate limit
     """
     now = datetime.utcnow()
     one_hour_ago = now - timedelta(hours=1)
-    
+
     # Clean up old timestamps
     rate_limit_store[ip_address] = [
         ts for ts in rate_limit_store[ip_address]
         if ts > one_hour_ago
     ]
-    
+
     # Check if limit exceeded
     if len(rate_limit_store[ip_address]) >= MAX_SUBMISSIONS_PER_HOUR:
         return False
-    
+
     # Add current timestamp
     rate_limit_store[ip_address].append(now)
     return True
+
 
 @router.post("/contact", response_model=ContactResponse)
 async def submit_contact_form(contact: ContactSubmissionCreate, request: Request):
@@ -60,14 +62,14 @@ async def submit_contact_form(contact: ContactSubmissionCreate, request: Request
     try:
         # Get client IP for rate limiting
         client_ip = request.client.host
-        
+
         # Check rate limit
         if not check_rate_limit(client_ip):
             raise HTTPException(
                 status_code=429,
                 detail="Too many requests. Please try again later."
             )
-        
+
         # Create submission object
         submission = ContactSubmission(
             name=contact.name,
@@ -75,7 +77,7 @@ async def submit_contact_form(contact: ContactSubmissionCreate, request: Request
             subject=contact.subject,
             message=contact.message
         )
-        
+
         # Store in database
         try:
             await db.contact_submissions.insert_one(submission.dict())
@@ -83,7 +85,7 @@ async def submit_contact_form(contact: ContactSubmissionCreate, request: Request
         except Exception as e:
             logger.error(f"Failed to store contact submission: {str(e)}")
             # Continue even if database storage fails
-        
+
         # Send email notification
         email_sent = email_service.send_contact_email(
             name=contact.name,
@@ -91,19 +93,21 @@ async def submit_contact_form(contact: ContactSubmissionCreate, request: Request
             subject=contact.subject,
             message=contact.message
         )
-        
+
         if email_sent:
             return ContactResponse(
                 success=True,
-                message="Thank you for reaching out! I'll get back to you soon."
+                message="Thank you for reaching out! I'll get back to you soon.",
+                email_sent=True,
             )
-        else:
-            # Email failed but submission was stored
-            return ContactResponse(
-                success=True,
-                message="Your message has been received. I'll get back to you soon."
-            )
-    
+
+        logger.warning(f"Email notification was not sent for contact submission from {contact.email}")
+        return ContactResponse(
+            success=True,
+            message="Your message was saved, but email delivery is not configured on the server.",
+            email_sent=False,
+        )
+
     except HTTPException:
         raise
     except Exception as e:
@@ -131,10 +135,14 @@ async def forward_to_external_api(contact: ContactSubmissionCreate):
             resp = await client.post(external_url, json=contact.model_dump())
 
         if resp.status_code >= 200 and resp.status_code < 300:
-            return ContactResponse(success=True, message="Message forwarded to external service.")
-        else:
-            logger.error(f"External API returned {resp.status_code}: {resp.text}")
-            raise HTTPException(status_code=502, detail="External service error")
+            return ContactResponse(
+                success=True,
+                message="Message forwarded to external service.",
+                email_sent=True,
+            )
+
+        logger.error(f"External API returned {resp.status_code}: {resp.text}")
+        raise HTTPException(status_code=502, detail="External service error")
 
     except httpx.RequestError as e:
         logger.error(f"Error contacting external API: {str(e)}")

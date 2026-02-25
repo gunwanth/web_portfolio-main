@@ -24,13 +24,7 @@ const Header = () => {
 
   const handleDownloadResume = async () => {
     try {
-      const BACKEND_URL =
-        (typeof process !== "undefined" && process.env && process.env.REACT_APP_BACKEND_URL) || "";
-
-      const response = await fetch(
-        `${BACKEND_URL}/api/resume/download`
-      );
-
+      const response = await fetch("/api/resume/download");
       if (!response.ok) {
         throw new Error("Failed to download resume");
       }
@@ -44,7 +38,6 @@ const Header = () => {
       document.body.appendChild(a);
       a.click();
       a.remove();
-
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading resume:", error);
