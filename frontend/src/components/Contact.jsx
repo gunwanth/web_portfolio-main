@@ -8,7 +8,8 @@ import { personalInfo } from '../data/mock';
 import { toast } from '../hooks/use-toast';
 import axios from 'axios';
 
-const API = '/api';
+const BACKEND_URL = (process.env.REACT_APP_BACKEND_URL || '').trim();
+const API = BACKEND_URL ? `${BACKEND_URL}/api` : '/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({

@@ -5,6 +5,7 @@ import { Download, Menu, X } from "lucide-react";
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const BACKEND_URL = (process.env.REACT_APP_BACKEND_URL || '').trim();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,7 +25,10 @@ const Header = () => {
 
   const handleDownloadResume = async () => {
     try {
-      const response = await fetch("/api/resume/download");
+      const endpoint = BACKEND_URL
+        ? `${BACKEND_URL}/api/resume/download`
+        : "/api/resume/download";
+      const response = await fetch(endpoint);
       if (!response.ok) {
         throw new Error("Failed to download resume");
       }
