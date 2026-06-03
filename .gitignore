@@ -58,6 +58,12 @@ __pycache__/
 *pyc*
 venv/
 .venv/
+.pyrefly.json
+**/.pyrefly.json
+
+# Local diagnostics
+backend/email_test.py
+backend/scratch_test_pwd.py
 
 # Development tools
 chainlit.md

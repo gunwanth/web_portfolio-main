@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from './ui/button';
 import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react';
 import { personalInfo } from '../data/mock';
+import Antigravity from './Antigravity';
 
 const Hero = () => {
   const scrollToSection = (id) => {
@@ -12,28 +13,44 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-amber-500 rounded-full filter blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+    <section className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
+      <div className="absolute inset-0 z-0 opacity-90">
+        <Antigravity
+          count={300}
+          magnetRadius={10}
+          ringRadius={7}
+          waveSpeed={0.7}
+          waveAmplitude={1}
+          particleSize={1.5}
+          lerpSpeed={0.05}
+          color="#7C3AED"
+          autoAnimate
+          particleVariance={1}
+          rotationSpeed={0}
+          depthFactor={1}
+          pulseSpeed={3}
+          particleShape="capsule"
+          fieldStrength={10}
+        />
       </div>
+      <div className="absolute inset-0 z-[1] bg-black/65"></div>
+      <div className="absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-black to-transparent"></div>
 
       <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
         <div className="text-center">
           <div className="mb-6 animate-fade-in">
-            <span className="text-amber-400 font-semibold text-lg">Hello, I'm</span>
+            <span className="text-amber-300 font-semibold text-lg">Hello, I'm</span>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in-up">
             {personalInfo.name}
           </h1>
           
-          <h2 className="text-2xl md:text-4xl font-light text-gray-300 mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <h2 className="text-2xl md:text-4xl font-light text-slate-200 mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             {personalInfo.title}
           </h2>
           
-          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             {personalInfo.tagline}
           </p>
 

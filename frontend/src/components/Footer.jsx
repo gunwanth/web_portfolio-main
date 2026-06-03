@@ -4,7 +4,7 @@ import { personalInfo } from '../data/mock';
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-900 text-white py-12">
+    <footer className="bg-black text-white py-12">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
@@ -13,7 +13,7 @@ const Footer = () => {
               <span className="text-amber-400">G</span>unvanth
             </h3>
             <p className="text-gray-400">
-              AI/ML Developer & Data Analyst passionate about building intelligent solutions.
+              Full Stack AI/ML Engineer building agentic AI systems, RAG workflows, and scalable web platforms.
             </p>
           </div>
 
@@ -34,6 +34,11 @@ const Footer = () => {
               <li>
                 <a href="#projects" className="text-gray-400 hover:text-amber-400 transition-colors">
                   Projects
+                </a>
+              </li>
+              <li>
+                <a href="#achievements" className="text-gray-400 hover:text-amber-400 transition-colors">
+                  Achievements
                 </a>
               </li>
               <li>

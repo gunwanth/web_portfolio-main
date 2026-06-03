@@ -8,21 +8,62 @@ import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Certifications from "./components/Certifications";
+import Achievements from "./components/Achievements";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import SectionReveal from "./components/SectionReveal";
 import { Toaster } from "./components/ui/toaster";
 
 const Home = () => {
   return (
     <div className="min-h-screen">
       <Header />
-      <Hero />
-      <About />
-      <Experience />
-      <Projects />
-      <Skills />
-      <Certifications />
-      <Contact />
+
+      {/* ── Hero with scroll-driven zoom-out (via wrapper) ── */}
+      <div className="hero-zoom-wrapper">
+        <div className="hero-sticky">
+          <Hero />
+        </div>
+        <div className="hero-zoom-spacer" />
+      </div>
+
+      {/* ── Each section gets a 3D reveal heading ── */}
+      <SectionReveal id="about" title="About Me" subtitle="who I am">
+        <About />
+      </SectionReveal>
+
+      <SectionReveal id="experience" title="Experience" subtitle="my journey">
+        <Experience />
+      </SectionReveal>
+
+      <SectionReveal id="projects" title="Projects" subtitle="what I've built">
+        <Projects />
+      </SectionReveal>
+
+      <SectionReveal id="skills" title="Skills" subtitle="what I work with">
+        <Skills />
+      </SectionReveal>
+
+      <SectionReveal
+        id="certifications"
+        title="Certifications"
+        subtitle="continuous learning"
+      >
+        <Certifications />
+      </SectionReveal>
+
+      <SectionReveal
+        id="achievements"
+        title="Achievements"
+        subtitle="milestones"
+      >
+        <Achievements />
+      </SectionReveal>
+
+      <SectionReveal id="contact" title="Contact" subtitle="get in touch">
+        <Contact />
+      </SectionReveal>
+
       <Footer />
     </div>
   );
@@ -30,7 +71,7 @@ const Home = () => {
 
 function App() {
   return (
-    <div className="App">
+    <div className="App dark bg-black text-slate-100">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />

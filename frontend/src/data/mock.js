@@ -2,85 +2,91 @@
 
 export const personalInfo = {
   name: "GUNVANTH MADABATTULA",
-  title: "AI/ML Developer & Data Analyst",
-  tagline: "Building intelligent solutions with AI, Machine Learning, and Data Analytics",
+  title: "Full Stack AI/ML Engineer | Agentic AI Developer | RAG & LLM Engineer",
+  tagline: "Building intelligent AI systems, scalable web applications, autonomous agents, and production-ready AI platforms using LLMs, RAG, Machine Learning, React, Node.js, and Cloud Technologies.",
   email: "gunvanth752004@gmail.com",
   phone: "+91 6303157119",
-  location: "Visakhapatnam, India",
+  location: "Visakhapatnam, Andhra Pradesh, India",
   linkedin: "https://www.linkedin.com/in/gunvanth-m/",
   github: "https://github.com/gunwanth",
   resumeUrl: "/resume/gunvanth_resume.pdf",
-  about: "AI/ML Developer specializing in Python, React, and Google Cloud technologies. Built 3+ full-stack AI applications including a disease prediction model with 85%+ accuracy. Experienced in RESTful APIs, data analysis, and Power BI dashboards and well-defined Deployment using Azure CI/CD pipelines"
+  about: "Final-year B.Tech Computer Science Engineering (AI & ML) student with hands-on experience developing AI-powered products, Retrieval-Augmented Generation (RAG) systems, agentic AI workflows, intelligent chatbots, stock market analysis platforms, phishing detection systems, disease prediction models, and full-stack web applications. Experienced in designing scalable backend architectures, integrating LLMs, vector databases, broker APIs, cloud services, and real-time analytics platforms. Strong interest in Generative AI, Agentic AI, System Design, Machine Learning Engineering, and Full-Stack Development."
 };
 
 export const experiences = [
   {
     id: 1,
-    title: "Data Analyst Intern",
-    company: "Naveen PVC Bend Works and Marketing Agencies",
-    period: "Jan 2025 - Mar 2025",
-    description: "Conducting data analysis to optimize business operations and marketing strategies.",
+    title: "Full Stack AI/ML Engineer Intern",
+    company: "AAVI Labs",
+    period: "Mar 2026 - May 2026",
+    description: "Developed production-grade AI systems, RAG pipelines, semantic search, and intelligent orchestration workflows.",
+    highlights: [
+      "Developed a production-grade AI chatbot platform",
+      "Built Retrieval-Augmented Generation (RAG) pipelines",
+      "Implemented semantic search and vector database integrations",
+      "Developed AGI-inspired search workflows",
+      "Created rubric-based AI evaluation frameworks",
+      "Integrated multi-source APIs and intelligent orchestration systems",
+      "Worked on real-time conversation management systems"
+    ],
     type: "internship"
   },
   {
     id: 2,
-    title: "Google Cloud Generative AI Virtual Internship",
-    company: "AICTE Eduskills Cohort-9",
-    period: "July 2024 - Sep 2024",
-    description: "Explored generative AI technologies and cloud computing solutions using Google Cloud Platform.",
+    title: "Data Analyst Intern",
+    company: "Naveen PVC Bend Works & Marketing Agencies",
+    period: "Jan 2025 - Mar 2025",
+    description: "Built Power BI dashboards, managed server reporting workflows, and improved business data analysis processes.",
+    highlights: [
+      "Built 5+ Power BI dashboards",
+      "Reduced reporting time by 40%",
+      "Performed server management and business data analysis",
+      "Improved operational reporting processes"
+    ],
     type: "internship"
   },
   {
     id: 3,
-    title: "GEN AI-ML Virtual Internship",
-    company: "AICTE Eduskills Cohort-8",
-    period: "Apr 2024 - June 2024",
-    description: "Gained hands-on experience with generative AI and machine learning technologies.",
+    title: "Google Cloud Generative AI Intern",
+    company: "AICTE Eduskills",
+    period: "Jul 2024 - Sep 2024",
+    description: "Worked on Generative AI labs, Google Cloud AI services, prompt engineering, and cloud-based AI workflows.",
+    highlights: [
+      "Worked on Generative AI labs",
+      "Learned Google Cloud AI services",
+      "Practiced prompt engineering",
+      "Built cloud-based AI workflows",
+      "Worked with storage systems and cloud architecture"
+    ],
     type: "internship"
-  },
-  {
-    id: 4,
-    title: "PowerBI Data Analyst",
-    company: "PwC (Job Simulation)",
-    period: "2024",
-    description: "Completed job simulation as PowerBI data analyst, working on real-world data visualization challenges.",
-    type: "experience"
-  },
-  {
-    id: 5,
-    title: "Data Analytics Virtual Program",
-    company: "Accenture (Forage)",
-    period: "2024",
-    description: "Participated in Accenture Virtual Experience Program on Data Analytics.",
-    type: "experience"
   }
 ];
 
 export const projects = [
   {
     id: 1,
-    title: "Dine Space",
-    description: "Full-stack web application that allows users to discover nearby restaurants based on real-time location and preferences. Features image-based food search with visual input recognition.",
-    technologies: ["Flask", "Python", "Zomato API", "Machine Learning", "Computer Vision"],
+    title: "NexaCore",
+    description: "Full-stack agentic AI chat platform powered by SambaNova & Hugging Face APIs. Features a multi-step autonomous Dino agent with web grounding, persistent RAG knowledge base, and multi-session management.",
+    technologies: ["Node.js", "Express.js", "React", "Vite", "PostgreSQL", "SambaNova API", "Agentic AI", "RAG"],
     highlights: [
-      "Integrated Zomato datasets for restaurant recommendations",
-      "Built image-based food search feature",
-      "Custom data preprocessing and JSON conversion scripts"
+      "Agentic ReAct loop (Dino 1.0) with web search, RAG retrieval, and autonomous knowledge storage",
+      "Persistent knowledge base with full-text chunked retrieval and continuous self-learning",
+      "Provider-cascade image generation pipeline with HF Inference, Freepik & local worker fallbacks"
     ],
-    github: "https://github.com/gunwanth/dine-space",
+    github: "https://github.com/gunwanth/FuboticsAI",
     demo: null
   },
   {
     id: 2,
-    title: "Smart Traffic Flow Analyzer",
-    description: "Machine learning model using YOLOv8n to count vehicles crossing traffic signals in real-time. Provides enhanced traffic flow insights through precise vehicle counting and pattern recognition.",
-    technologies: ["YOLOv8n", "Python", "Computer Vision", "Real-time Processing"],
+    title: "AI Rule Builder",
+    description: "React and React Flow workspace for designing rule pipelines, simulating executions, and generating Agent Data Protocol outputs across multiple domains.",
+    technologies: ["React", "React Flow", "Node.js", "PostgreSQL", "Agent Data Protocol"],
     highlights: [
-      "Real-time vehicle detection and classification",
-      "Optimized for performance and scalability",
-      "Accurate pattern recognition in diverse traffic conditions"
+      "Visual workflow builder with draggable rule nodes and connected edges",
+      "Simulation Lab for replaying rules, test cases, and execution traces",
+      "ADP pipeline panel with raw, standardized, and SFT-ready outputs"
     ],
-    github: "https://github.com/gunwanth/Smart_Traffic_flow_Analyzer",
+    github: "https://github.com/gunwanth/RuleManagement",
     demo: null
   },
   {
@@ -98,15 +104,15 @@ export const projects = [
   },
   {
     id: 4,
-    title: "Dynamic Phishing Detector",
-    description: "Advanced security tool that dynamically detects phishing websites using machine learning algorithms. Analyzes URL patterns, website content, and behavioral indicators to identify malicious sites.",
-    technologies: ["Python", "Machine Learning", "Flask", "Security Analysis"],
+    title: "Sentinel",
+    description: "Advanced AI-powered security platform for detecting phishing emails and SMS messages. Combines ML models, channel-aware ingestion pipelines, and agentic RAG workflows to identify and block threats in real time.",
+    technologies: ["Python", "Machine Learning", "Flask", "Scikit-learn", "NLP", "Security Analysis"],
     highlights: [
-      "Dynamic analysis of website characteristics",
-      "Real-time phishing detection using ML models",
-      "Comprehensive URL and content feature extraction"
+      "Channel-aware phishing detection across Gmail and SMS with multi-model ensemble",
+      "Agentic RAG pipeline for continuous threat intelligence learning and knowledge base growth",
+      "Real-time URL, content, and behavioral feature extraction with explainable risk scoring"
     ],
-    github: "https://github.com/gunwanth/phishing_project_dynamic",
+    github: "https://github.com/gunwanth/Safechat_Intelligent_Messaging_System",
     demo: null
   },
   {
@@ -124,38 +130,38 @@ export const projects = [
   },
   {
     id: 6,
-    title: "Sweet Shop Management",
-    description: "Full-stack inventory and e-commerce system with admin panels for stock management and customer dashboards for purchasing sweets.",
-    technologies: ["Prisma ORM", "PostgreSQL", "JWT Authentication", "Jest"],
+    title: "Agent Control Protocol",
+    description: "Standardized protocol workflow for collecting, processing, validating, and converting agent training data into supervised fine-tuning formats.",
+    technologies: ["Python", "Pydantic", "JSONL", "Pytest", "SFT Pipelines"],
     highlights: [
-      "Admin: add / delete / restock sweets",
-      "JWT-based authentication",
-      "Tests with Jest & Supertest"
+      "Unified schemas for agent actions, observations, and trajectories",
+      "Multi-agent conversion support for OpenHands, SWE-agent, and AgentLab",
+      "Built-in quality checks, schema validation, and dataset conversion tests"
     ],
-    github: "https://github.com/gunwanth/sweet-shop-management-system",
-    demo: null
+    github: "https://github.com/neulab/agent-data-protocol",
+    demo: "https://www.agentdataprotocol.com/"
   }
 ];
 
 export const skills = {
-  programming: ["Python", "Java", "C++", "SQL"],
-  dataScience: ["Data Analysis", "Machine Learning", "Data Visualization", "PowerBI", "AI", "Prompt Engineering"],
-  frameworks: ["Flask", "YOLOv8"],
-  tools: ["VS Code", "GitHub", "Postman", "Oracle", "Supabase", "LM Studio", "MS Office"],
-  other: ["DSA", "Computer Vision", "LLMs"]
+  programming: ["Python", "Java", "JavaScript", "TypeScript", "SQL", "C", "C++"],
+  dataScience: ["Machine Learning", "Deep Learning", "Generative AI", "Agentic AI", "RAG Systems", "Prompt Engineering", "LLM Integration", "Semantic Search", "Vector Databases", "NLP", "Predictive Analytics"],
+  frontend: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Streamlit"],
+  backend: ["Node.js", "Express.js", "FastAPI", "REST APIs", "JWT Authentication"],
+  databases: ["PostgreSQL", "Firebase", "Supabase", "Vector Databases"],
+  cloudDevOps: ["Google Cloud Platform", "Firebase Services", "Git", "GitHub", "Postman"],
+  dataAnalytics: ["Power BI", "Excel", "Data Visualization", "Dashboard Development"],
+  other: ["Agentic AI Systems", "Large Language Models (LLMs)", "AI Chatbots", "Multi-Agent Architectures", "Full Stack Development", "Machine Learning Engineering", "System Design", "Cloud Computing", "API Integration", "Vector Search Systems", "AI Evaluation Frameworks"]
 };
 
 export const certifications = [
-  { id: 1, name: "Python Certification", provider: "GUVI", year: "2024" },
-  { id: 2, name: "Excel Certification", provider: "GUVI", year: "2024" },
-  { id: 3, name: "Advanced Python", provider: "Infosys Springboard", year: "2024" },
-  { id: 4, name: "Java Programming", provider: "edX, CareerNinja", year: "2024" },
-  { id: 5, name: "Prompt Engineering (Beginner)", provider: "Cognitive AI Classes", year: "2024" },
-  { id: 6, name: "Prompt Engineering (Intermediate)", provider: "Codecademy", year: "2024" },
-  { id: 7, name: "Power BI", provider: "Codecademy", year: "2024" },
-  { id: 8, name: "Power BI (Intermediate)", provider: "Infosys Springboard 5.0", year: "2024" },
-  { id: 9, name: "Data Analytics using Python", provider: "APSSDC", year: "2024" },
-  { id: 10, name: "Gen AI and Cloud Computing Badges", provider: "Google Cloud", year: "2024" }
+  { id: 1, name: "Google Cloud Generative AI Certification", provider: "Google Cloud / AICTE Eduskills", year: "2024" },
+  { id: 2, name: "Google Cloud Study Jam Badges", provider: "Google Cloud", year: "2024" },
+  { id: 3, name: "Power BI Certification", provider: "Codecademy / Infosys Springboard", year: "2024" },
+  { id: 4, name: "Java Certification", provider: "edX / CareerNinja", year: "2024" },
+  { id: 5, name: "Python Certification", provider: "GUVI / Infosys Springboard", year: "2024" },
+  { id: 6, name: "Prompt Engineering Certification", provider: "Cognitive AI Classes / Codecademy", year: "2024" },
+  { id: 7, name: "Data Analytics Certification", provider: "APSSDC / Accenture", year: "2024" }
 ];
 
 export const education = [
@@ -163,21 +169,16 @@ export const education = [
     id: 1,
     degree: "Bachelor of Technology in Computer Science Engineering (AI/ML)",
     institution: "Gayatri Vidya Parishad College of Engineering",
-    period: "2022 - 2026",
-    grade: "7.8 CGPA"
-  },
-  {
-    id: 2,
-    degree: "Intermediate (MPC)",
-    institution: "Sri Viswa Junior College",
-    period: "2020 - 2022",
-    grade: "78%"
-  },
-  {
-    id: 3,
-    degree: "Grade X (CBSE)",
-    institution: "Little Angels School",
-    period: "2019 - 2020",
-    grade: "75%"
+    period: "Nov 2022 - Apr 2026",
+    grade: "7.8/10 CGPA"
   }
+];
+
+export const achievements = [
+  "Managed infrastructure handling 700+ application requests for a private business organization",
+  "Successfully built multiple AI-powered production systems",
+  "Completed AICTE Google Cloud Generative AI Internship",
+  "Developed full-stack AI solutions integrating LLMs, RAG, and cloud services",
+  "Participated in virtual experiences with Accenture and PwC",
+  "Qualified for the Juspay Hiring Challenge 2025 - Round 1.2"
 ];

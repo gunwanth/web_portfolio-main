@@ -2,8 +2,8 @@
   "name": "web-portfolio-backend",
   "private": true,
   "scripts": {
-    "start": "python -m uvicorn server:app --host 0.0.0.0 --port 8000",
-    "dev": "python -m uvicorn server:app --host 0.0.0.0 --port 8000 --reload"
+    "start": "py -3.11 -m uvicorn server:app --host 0.0.0.0 --port 8000",
+    "dev": "py -3.11 -m uvicorn server:app --host 0.0.0.0 --port 8000 --reload"
   },
   "dependencies": {
     "fastapi": "^0.0.8"

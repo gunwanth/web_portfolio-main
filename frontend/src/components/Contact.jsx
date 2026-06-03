@@ -64,63 +64,57 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-white">
+    <section className="py-20 bg-black">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Get In Touch</h2>
-          <div className="w-24 h-1 bg-amber-500 mx-auto"></div>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-            I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
-          </p>
-        </div>
+
 
         <div className="grid md:grid-cols-2 gap-12">
           {/* Contact Information */}
           <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-slate-900 mb-6">Contact Information</h3>
+            <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
 
-            <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500">
+            <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500 bg-black border-slate-800">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-amber-100 rounded-lg">
                   <Mail className="w-6 h-6 text-amber-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Email</p>
-                  <a href={`mailto:${personalInfo.email}`} className="text-slate-900 font-semibold hover:text-amber-600 transition-colors">
+                  <p className="text-sm text-slate-400">Email</p>
+                  <a href={`mailto:${personalInfo.email}`} className="text-slate-100 font-semibold hover:text-amber-300 transition-colors">
                     {personalInfo.email}
                   </a>
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500">
+            <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500 bg-black border-slate-800">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-amber-100 rounded-lg">
                   <Phone className="w-6 h-6 text-amber-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Phone</p>
-                  <a href={`tel:${personalInfo.phone}`} className="text-slate-900 font-semibold hover:text-amber-600 transition-colors">
+                  <p className="text-sm text-slate-400">Phone</p>
+                  <a href={`tel:${personalInfo.phone}`} className="text-slate-100 font-semibold hover:text-amber-300 transition-colors">
                     {personalInfo.phone}
                   </a>
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500">
+            <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500 bg-black border-slate-800">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-amber-100 rounded-lg">
                   <MapPin className="w-6 h-6 text-amber-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Location</p>
-                  <p className="text-slate-900 font-semibold">{personalInfo.location}</p>
+                  <p className="text-sm text-slate-400">Location</p>
+                  <p className="text-slate-100 font-semibold">{personalInfo.location}</p>
                 </div>
               </div>
             </Card>
 
             <div className="mt-8">
-              <p className="text-gray-700 text-lg">
+              <p className="text-slate-300 text-lg">
                 Feel free to reach out for collaborations, internship opportunities, or just a friendly chat about technology and innovation!
               </p>
             </div>
@@ -128,11 +122,11 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div>
-            <Card className="p-8 shadow-lg border-t-4 border-amber-500">
-              <h3 className="text-2xl font-bold text-slate-900 mb-6">Send Me a Message</h3>
+            <Card className="p-8 shadow-lg border-t-4 border-amber-500 bg-black border-slate-800">
+              <h3 className="text-2xl font-bold text-white mb-6">Send Me a Message</h3>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
                     Your Name
                   </label>
                   <Input
@@ -143,12 +137,12 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="John Doe"
-                    className="w-full"
+                    className="w-full bg-black border-slate-700 text-slate-100 placeholder:text-slate-500"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
                     Your Email
                   </label>
                   <Input
@@ -159,12 +153,12 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="john@example.com"
-                    className="w-full"
+                    className="w-full bg-black border-slate-700 text-slate-100 placeholder:text-slate-500"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="subject" className="block text-sm font-medium text-slate-300 mb-2">
                     Subject
                   </label>
                   <Input
@@ -175,12 +169,12 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="Project Inquiry"
-                    className="w-full"
+                    className="w-full bg-black border-slate-700 text-slate-100 placeholder:text-slate-500"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
                     Message
                   </label>
                   <Textarea
@@ -190,7 +184,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="Tell me about your project or inquiry..."
-                    className="w-full min-h-[150px]"
+                    className="w-full min-h-[150px] bg-black border-slate-700 text-slate-100 placeholder:text-slate-500"
                   />
                 </div>
 

@@ -22,6 +22,9 @@ class EmailService:
         self.smtp_port = int(os.environ.get('SMTP_PORT', 587))
         self.smtp_user = os.environ.get('SMTP_USER', '').strip()
         self.smtp_password = os.environ.get('SMTP_PASSWORD', '').strip()
+        # Remove spaces for Gmail App Passwords which are displayed as 4x4 blocks
+        if "gmail.com" in self.smtp_host.lower():
+            self.smtp_password = self.smtp_password.replace(" ", "")
         self.recipient_email = os.environ.get('RECIPIENT_EMAIL', 'gunvanth752004@gmail.com').strip()
 
     def send_contact_email(self, name: str, email: str, subject: str, message: str) -> bool:

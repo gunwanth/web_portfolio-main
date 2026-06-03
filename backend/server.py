@@ -66,17 +66,6 @@ async def home():
     }
 
 # --------------------------------------------------
-# ✅ GLOBAL OPTIONS HANDLER (CRITICAL FIX)
-# --------------------------------------------------
-@app.options("/{full_path:path}")
-async def preflight_handler(full_path: str, request: Request):
-    """
-    Handles all CORS preflight (OPTIONS) requests.
-    Required for Axios POST requests from browser.
-    """
-    return Response(status_code=200)
-
-# --------------------------------------------------
 # API Router
 # --------------------------------------------------
 api_router = APIRouter(prefix="/api")

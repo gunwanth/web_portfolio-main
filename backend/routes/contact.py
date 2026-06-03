@@ -51,6 +51,7 @@ def check_rate_limit(ip_address: str) -> bool:
 
 
 @router.post("/contact", response_model=ContactResponse)
+@router.post("/contact/", response_model=ContactResponse)
 async def submit_contact_form(contact: ContactSubmissionCreate, request: Request):
     """
     Handle contact form submission
