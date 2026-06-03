@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request
+from database import get_database
 from models.contact import ContactSubmissionCreate, ContactResponse, ContactSubmission
 from services.email_service import email_service
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from datetime import datetime, timedelta
@@ -21,12 +21,6 @@ router = APIRouter(prefix="/api", tags=["contact"])
 # Simple rate limiting: IP -> list of submission timestamps
 rate_limit_store = defaultdict(list)
 MAX_SUBMISSIONS_PER_HOUR = 5
-
-# Get database connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
 
 def check_rate_limit(ip_address: str) -> bool:
     """
@@ -80,9 +74,13 @@ async def submit_contact_form(contact: ContactSubmissionCreate, request: Request
         )
 
         # Store in database
+        db = get_database()
         try:
-            await db.contact_submissions.insert_one(submission.dict())
-            logger.info(f"Contact submission stored in database from {contact.email}")
+            if db is None:
+                logger.warning("MongoDB is not configured. Contact submission was not stored.")
+            else:
+                await db.contact_submissions.insert_one(submission.dict())
+                logger.info(f"Contact submission stored in database from {contact.email}")
         except Exception as e:
             logger.error(f"Failed to store contact submission: {str(e)}")
             # Continue even if database storage fails

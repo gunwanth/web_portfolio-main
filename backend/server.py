@@ -1,7 +1,6 @@
-from fastapi import FastAPI, APIRouter, Request, Response
+from fastapi import FastAPI, APIRouter, HTTPException, Request, Response
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
@@ -9,6 +8,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List
 import uuid
 from datetime import datetime, timezone
+from database import close_database, get_database, init_database
 
 # Import routers
 from routes.contact import router as contact_router
@@ -23,9 +23,7 @@ load_dotenv(ROOT_DIR / ".env")
 # --------------------------------------------------
 # Database setup
 # --------------------------------------------------
-mongo_url = os.environ["MONGO_URL"]
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ["DB_NAME"]]
+client, db = init_database()
 
 # --------------------------------------------------
 # App initialization
@@ -85,6 +83,10 @@ async def root():
 
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
+    db = get_database()
+    if db is None:
+        raise HTTPException(status_code=503, detail="Database is not configured")
+
     status_obj = StatusCheck(**input.model_dump())
     doc = status_obj.model_dump()
     doc["timestamp"] = doc["timestamp"].isoformat()
@@ -93,6 +95,10 @@ async def create_status_check(input: StatusCheckCreate):
 
 @api_router.get("/status", response_model=List[StatusCheck])
 async def get_status_checks():
+    db = get_database()
+    if db is None:
+        raise HTTPException(status_code=503, detail="Database is not configured")
+
     status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
     for check in status_checks:
         check["timestamp"] = datetime.fromisoformat(check["timestamp"])
@@ -119,4 +125,4 @@ logger = logging.getLogger(__name__)
 # --------------------------------------------------
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    client.close()
+    close_database()
