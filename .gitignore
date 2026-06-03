@@ -2,7 +2,6 @@
 
 # IDE and editors
 .idea/
-.vscode/
 
 # Dependencies
 node_modules/
@@ -31,11 +30,7 @@ dist/
 dist
 
 # Environment files (comprehensive coverage)
-.env
 *.env
-**/.env
-.env.*
-**/.env.*
 !.env.example
 !**/.env.example
 
@@ -91,3 +86,7 @@ agenthub/agents/youtube/db
 
 # Mobile development
 android-sdk/ 
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat
