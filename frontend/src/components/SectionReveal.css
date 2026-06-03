@@ -1,140 +1,26 @@
-/* ================================================================
-   SectionReveal — Full 3D Spatial Zoom: Heading + Content
-   ================================================================
-
-   Scroll sequence per section:
-     1. Heading rushes in from deep 3D → holds → zooms past viewer
-     2. Content block zooms in from 3D depth → settles readable
-     3. Each major card/child also zooms in individually (staggered)
-   ================================================================ */
-
-/* ─────────────────────────── Keyframes ─────────────────────────── */
-
-/* HEADING — comes from far away, holds, flies past the viewer */
-@keyframes section-heading-zoom {
-  0% {
-    transform: perspective(1400px) scale(0.05) translateZ(-3000px);
-    opacity: 0;
-    filter: blur(60px);
-    letter-spacing: 1.2em;
-  }
-  28% {
-    transform: perspective(1400px) scale(1) translateZ(0px);
-    opacity: 1;
-    filter: blur(0px);
-    letter-spacing: -0.02em;
-  }
-  72% {
-    transform: perspective(1400px) scale(1) translateZ(0px);
-    opacity: 1;
-    filter: blur(0px);
-    letter-spacing: -0.02em;
-  }
-  100% {
-    transform: perspective(1400px) scale(4.5) translateZ(1200px);
-    opacity: 0;
-    filter: blur(28px);
-    letter-spacing: -0.02em;
-  }
-}
-
-@keyframes section-sub-zoom {
-  0%   { opacity: 0; transform: translateY(40px) scale(0.7); }
-  22%  { opacity: 0; transform: translateY(40px) scale(0.7); }
-  38%  { opacity: 1; transform: translateY(0) scale(1); }
-  70%  { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-30px) scale(1.8); }
-}
-
-@keyframes section-accent-grow {
-  0%   { width: 0;     opacity: 0; }
-  28%  { width: 0;     opacity: 0; }
-  45%  { width: 6rem;  opacity: 1; }
-  70%  { width: 6rem;  opacity: 1; }
-  100% { width: 14rem; opacity: 0; }
-}
-
-/* CONTENT BLOCK — zooms in from 3D depth and settles */
-@keyframes content-zoom-in {
-  0% {
-    transform: perspective(1200px) scale(0.3) translateZ(-1000px);
-    opacity: 0;
-    filter: blur(24px);
-  }
-  55% {
-    transform: perspective(1200px) scale(1.04) translateZ(20px);
-    opacity: 1;
-    filter: blur(0px);
-  }
-  100% {
-    transform: perspective(1200px) scale(1) translateZ(0px);
-    opacity: 1;
-    filter: blur(0px);
-  }
-}
-
-/* INDIVIDUAL CARDS — each child zooms in when it enters view */
-@keyframes card-zoom-in {
-  0% {
-    transform: perspective(900px) scale(0.45) translateZ(-700px);
-    opacity: 0;
-    filter: blur(16px);
-  }
-  65% {
-    transform: perspective(900px) scale(1.02) translateZ(10px);
-    opacity: 1;
-    filter: blur(0);
-  }
-  100% {
-    transform: perspective(900px) scale(1) translateZ(0);
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-/* HERO — zooms toward viewer and fades out as you scroll away */
-@keyframes hero-zoom-out {
-  0%   { transform: perspective(1200px) scale(1)   translateZ(0);    opacity: 1; filter: blur(0);    }
-  100% { transform: perspective(1200px) scale(3.2) translateZ(800px); opacity: 0; filter: blur(30px); }
-}
-
-/* ─────────────────────────── Wrapper ─────────────────────────── */
+/* Section reveal and hero zoom animations.
+   These avoid CSS scroll timelines so production browsers render reliably. */
 
 .section-reveal-wrapper {
   position: relative;
   background: #000;
-  view-timeline-name: --section-vt;
-  view-timeline-axis: block;
   overflow-x: clip;
 }
 
-/* ─────────────────────────── Sticky heading scene ─────────────────────────── */
-
-/* transparent + z:1 → content (z:10) slides over it */
 .section-reveal-scene {
-  position: sticky;
-  top: 0;
-  height: 100svh;
+  position: relative;
   width: 100%;
+  min-height: 42vh;
   display: flex;
   align-items: center;
   justify-content: center;
   perspective: 1400px;
   overflow: hidden;
-  background: transparent;
+  background: #000;
   z-index: 1;
   pointer-events: none;
+  padding: 5rem 1rem 2rem;
 }
-
-/* ─────────────────────────── Spacer ─────────────────────────── */
-
-/* Scroll distance for the heading animation */
-.section-reveal-spacer {
-  height: 200vh;
-  pointer-events: none;
-}
-
-/* ─────────────────────────── Heading text ─────────────────────────── */
 
 .section-reveal-inner {
   text-align: center;
@@ -144,7 +30,7 @@
 .section-reveal-title {
   font-size: clamp(2.8rem, 10vw, 9rem);
   font-weight: 900;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   line-height: 1;
   background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 40%, #f97316 100%);
   -webkit-background-clip: text;
@@ -152,15 +38,29 @@
   background-clip: text;
   display: block;
   white-space: nowrap;
+  opacity: 0;
+  transform: perspective(1400px) scale(0.22) translateZ(-1200px);
+  filter: blur(28px);
+  transition:
+    opacity 800ms ease,
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 900ms ease;
+  will-change: transform, opacity, filter;
 }
 
 .section-reveal-sub {
+  display: block;
   font-size: clamp(0.85rem, 1.8vw, 1.2rem);
   color: #94a3b8;
-  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
   font-weight: 300;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(24px) scale(0.85);
+  transition:
+    opacity 650ms ease 120ms,
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
 }
 
 .section-reveal-accent {
@@ -168,47 +68,72 @@
   background: linear-gradient(90deg, #f59e0b, #f97316);
   margin: 1rem auto 0;
   border-radius: 2px;
-  width: 6rem;
+  width: 0;
+  opacity: 0;
+  transition:
+    width 700ms cubic-bezier(0.16, 1, 0.3, 1) 240ms,
+    opacity 500ms ease 240ms;
 }
 
-/* ─────────────────────────── Content view-timeline source ─────────────────────────── */
+.is-heading-visible .section-reveal-title {
+  opacity: 1;
+  transform: perspective(1400px) scale(1) translateZ(0);
+  filter: blur(0);
+}
 
-/*
-  Outer div: owns the view-timeline so we can animate the
-  inner .section-reveal-content relative to this element's
-  viewport entry — without the self-referencing problem.
-*/
+.is-heading-visible .section-reveal-sub {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.is-heading-visible .section-reveal-accent {
+  width: 6rem;
+  opacity: 1;
+}
+
 .section-reveal-content-vt {
   position: relative;
   z-index: 10;
   background: #000;
-  /* This element's visibility drives the content animation */
-  view-timeline-name: --content-vt;
-  view-timeline-axis: block;
 }
 
-/* ─────────────────────────── Animated content block ─────────────────────────── */
-
-/* zooms in from depth when .section-reveal-content-vt enters viewport */
 .section-reveal-content {
   position: relative;
   background: #000;
   overflow: hidden;
+  opacity: 0;
+  transform: perspective(1200px) scale(0.82) translateZ(-220px);
+  filter: blur(18px);
+  transition:
+    opacity 750ms ease,
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 900ms ease;
+  will-change: transform, opacity, filter;
 }
 
-/* ─────────────────────────── Hero ─────────────────────────── */
+.section-reveal-content.is-content-visible {
+  opacity: 1;
+  transform: perspective(1200px) scale(1) translateZ(0);
+  filter: blur(0);
+}
 
 .hero-zoom-wrapper {
   position: relative;
-  view-timeline-name: --hero-vt;
-  view-timeline-axis: block;
 }
 
 .hero-sticky {
+  --hero-scale: 1;
+  --hero-opacity: 1;
+  --hero-blur: 0px;
   position: sticky;
   top: 0;
   z-index: 1;
   overflow: hidden;
+  transform: perspective(1200px) scale(var(--hero-scale)) translateZ(0);
+  opacity: var(--hero-opacity);
+  filter: blur(var(--hero-blur));
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
 }
 
 .hero-zoom-spacer {
@@ -216,90 +141,34 @@
   pointer-events: none;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SCROLL-DRIVEN ANIMATIONS
-   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .section-reveal-title,
+  .section-reveal-sub,
+  .section-reveal-accent,
+  .section-reveal-content,
+  .hero-sticky {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
 
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
+  .section-reveal-accent {
+    width: 6rem !important;
+  }
 
-    /* ── Hero: zooms toward viewer and fades ── */
-    .hero-sticky {
-      animation: hero-zoom-out linear both;
-      animation-timeline: --hero-vt;
-      animation-range: exit 0% exit 100%;
-      will-change: transform, opacity, filter;
-    }
-
-    /* ── Section heading: zoom in → hold → zoom out past viewer ── */
-    .section-reveal-title {
-      animation: section-heading-zoom linear both;
-      animation-timeline: --section-vt;
-      animation-range: entry 0% contain 100%;
-      will-change: transform, opacity, filter;
-    }
-
-    .section-reveal-sub {
-      animation: section-sub-zoom linear both;
-      animation-timeline: --section-vt;
-      animation-range: entry 0% contain 100%;
-      will-change: transform, opacity;
-    }
-
-    .section-reveal-accent {
-      animation: section-accent-grow linear both;
-      animation-timeline: --section-vt;
-      animation-range: entry 0% contain 100%;
-      will-change: width, opacity;
-    }
-
-    /* ── Content block: zoom in from depth when it enters viewport ── */
-    .section-reveal-content {
-      animation: content-zoom-in linear both;
-      animation-timeline: --content-vt;
-      animation-range: entry 0% entry 100%;
-      will-change: transform, opacity, filter;
-    }
-
-    /*
-      Individual direct children of the section (cards, grids, etc.)
-      also zoom in from depth as each enters the viewport.
-      Each child gets its own view-timeline scoped to itself.
-    */
-    .section-reveal-content > section > div > *,
-    .section-reveal-content > section > div > div > * {
-      view-timeline-name: --child-vt;
-      view-timeline-axis: block;
-      animation: card-zoom-in linear both;
-      animation-timeline: --child-vt;
-      animation-range: entry 0% entry 85%;
-      will-change: transform, opacity, filter;
-    }
+  .hero-zoom-spacer {
+    display: none;
   }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   FALLBACK — browsers without scroll-timeline
-   ═══════════════════════════════════════════════════════════ */
-
-@supports not (animation-timeline: scroll()) {
-  /* Show headings statically */
+@media (max-width: 640px) {
   .section-reveal-scene {
-    position: relative;
-    height: auto;
-    padding: 5rem 1rem 2rem;
-    pointer-events: auto;
-    background: #000;
+    min-height: 34vh;
+    padding: 4rem 1rem 1.5rem;
   }
-  .section-reveal-spacer         { display: none; }
-  .section-reveal-title          { opacity: 1 !important; transform: none !important; filter: none !important; letter-spacing: -0.02em !important; }
-  .section-reveal-sub            { opacity: 1 !important; transform: none !important; }
-  .section-reveal-accent         { width: 6rem !important; opacity: 1 !important; }
-  .section-reveal-content-vt     { z-index: auto; }
-  .section-reveal-content        { animation: none !important; transform: none !important; opacity: 1 !important; }
-  .section-reveal-content > section > div > *,
-  .section-reveal-content > section > div > div > * { animation: none !important; transform: none !important; opacity: 1 !important; }
-  /* Hero fallback */
-  .hero-sticky                   { position: relative; animation: none !important; }
-  .hero-zoom-spacer              { display: none; }
+
+  .section-reveal-title {
+    white-space: normal;
+  }
 }
