@@ -59,8 +59,8 @@
   },
   "scripts": {
     "test": "craco test",
-    "build": "node init && craco build",
-    "start": "node init && craco start"
+    "build": "craco build",
+    "start": "craco start"
   },
   "proxy": "http://127.0.0.1:8000",
   "browserslist": {
