@@ -1,6 +1,6 @@
 import React from "react";
 import { skills } from "../data/mock";
-import logos from "../assets/skill-marks.svg";
+import SkillLogo from "../assets/SkillLogo";
 
 const groups = [
   { title: "Languages", tools: [["python", "Python"], ["java", "Java"], ["javascript", "JavaScript"], ["typescript", "TypeScript"]] },
@@ -26,9 +26,7 @@ export default function Skills() {
             <h3>{title}</h3>
             <ul>{tools.map(([id, name]) => (
               <li key={id}>
-                <svg aria-hidden="true" focusable="false" width="32" height="32">
-                  <use href={`${logos}#${id}`} />
-                </svg>
+                <SkillLogo id={id} />
                 <span>{name}</span>
               </li>
             ))}</ul>
