@@ -1,28 +1,35 @@
-import React, { useState } from 'react';
-import { Card } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import { personalInfo } from '../data/mock';
-import { toast } from '../hooks/use-toast';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Copy, Check } from "lucide-react";
+import { personalInfo } from "../data/mock";
+import { toast } from "../hooks/use-toast";
+import axios from "axios";
 
-const BACKEND_URL = (process.env.REACT_APP_BACKEND_URL || '').trim();
-const API = BACKEND_URL ? `${BACKEND_URL}/api` : '/api';
+const BACKEND_URL = (process.env.REACT_APP_BACKEND_URL || "").trim();
+const API = BACKEND_URL ? `${BACKEND_URL}/api` : "/api";
 
-const Contact = () => {
+const Contact = ({ onDownloadResume }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [copiedField, setCopiedField] = useState(null);
+
+  const handleCopy = (label, value) => {
+    navigator.clipboard.writeText(value);
+    setCopiedField(label);
+    toast({
+      title: `${label} Copied`,
+      description: `${value} copied to clipboard`
+    });
+    setTimeout(() => setCopiedField(null), 2500);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value
     }));
@@ -39,24 +46,25 @@ const Contact = () => {
       if (response.data.success) {
         const emailSent = response.data.email_sent !== false;
         toast({
-          title: emailSent ? 'Message Sent!' : 'Message Saved',
+          title: emailSent ? "Message Sent!" : "Message Saved",
           description: response.data.message,
-          variant: emailSent ? 'default' : 'destructive'
+          variant: emailSent ? "default" : "destructive"
         });
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: "", email: "", subject: "", message: "" });
       }
     } catch (error) {
-      console.error('Error submitting contact form:', error);
+      console.error("Error submitting contact form:", error);
 
-      let errorMessage = 'Failed to send message. Please try again.';
+      let errorMessage =
+        "Failed to send message. Please try again or email directly.";
       if (error.response?.status === 429) {
-        errorMessage = 'Too many requests. Please try again in an hour.';
+        errorMessage = "Too many requests. Please try again in an hour.";
       }
 
       toast({
-        title: 'Error',
+        title: "Submission Notice",
         description: errorMessage,
-        variant: 'destructive'
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
@@ -64,148 +72,32 @@ const Contact = () => {
   };
 
   return (
-    <section className="py-20 bg-black">
-      <div className="max-w-7xl mx-auto px-6">
-
-
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500 bg-black border-slate-800">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-amber-100 rounded-lg">
-                  <Mail className="w-6 h-6 text-amber-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-400">Email</p>
-                  <a href={`mailto:${personalInfo.email}`} className="text-slate-100 font-semibold hover:text-amber-300 transition-colors">
-                    {personalInfo.email}
-                  </a>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500 bg-black border-slate-800">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-amber-100 rounded-lg">
-                  <Phone className="w-6 h-6 text-amber-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-400">Phone</p>
-                  <a href={`tel:${personalInfo.phone}`} className="text-slate-100 font-semibold hover:text-amber-300 transition-colors">
-                    {personalInfo.phone}
-                  </a>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:shadow-lg transition-shadow border-l-4 border-amber-500 bg-black border-slate-800">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-amber-100 rounded-lg">
-                  <MapPin className="w-6 h-6 text-amber-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-400">Location</p>
-                  <p className="text-slate-100 font-semibold">{personalInfo.location}</p>
-                </div>
-              </div>
-            </Card>
-
-            <div className="mt-8">
-              <p className="text-slate-300 text-lg">
-                Feel free to reach out for collaborations, internship opportunities, or just a friendly chat about technology and innovation!
-              </p>
-            </div>
+    <section className="folio-wrap contact-section">
+      <h2>Contact</h2>
+      <div className="contact-layout">
+        <address>
+          {[[ "Email", personalInfo.email, "mailto:" ], [ "Phone", personalInfo.phone, "tel:" ]].map(([label, value, prefix]) =>
+            <div key={label}><a href={prefix + value}>{value}</a>
+              <button aria-label={`Copy ${label.toLowerCase()}`} onClick={() => handleCopy(label, value)}>
+                {copiedField === label ? <Check size={14} /> : <Copy size={14} />}
+              </button></div>
+          )}
+          <p>{personalInfo.location}</p>
+          <div className="contact-social">
+            <a href={personalInfo.github} target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href={personalInfo.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>
+            <button className="folio-link" onClick={onDownloadResume}>Résumé ↓</button>
           </div>
-
-          {/* Contact Form */}
-          <div>
-            <Card className="p-8 shadow-lg border-t-4 border-amber-500 bg-black border-slate-800">
-              <h3 className="text-2xl font-bold text-white mb-6">Send Me a Message</h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
-                    Your Name
-                  </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    type="text"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    placeholder="John Doe"
-                    className="w-full bg-black border-slate-700 text-slate-100 placeholder:text-slate-500"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
-                    Your Email
-                  </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    placeholder="john@example.com"
-                    className="w-full bg-black border-slate-700 text-slate-100 placeholder:text-slate-500"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-slate-300 mb-2">
-                    Subject
-                  </label>
-                  <Input
-                    id="subject"
-                    name="subject"
-                    type="text"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    placeholder="Project Inquiry"
-                    className="w-full bg-black border-slate-700 text-slate-100 placeholder:text-slate-500"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
-                    Message
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    placeholder="Tell me about your project or inquiry..."
-                    className="w-full min-h-[150px] bg-black border-slate-700 text-slate-100 placeholder:text-slate-500"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-6 transition-transform hover:scale-105"
-                >
-                  {isSubmitting ? (
-                    <span>Sending...</span>
-                  ) : (
-                    <>
-                      <Send className="w-5 h-5 mr-2" />
-                      Send Message
-                    </>
-                  )}
-                </Button>
-              </form>
-            </Card>
-          </div>
-        </div>
+        </address>
+        <details><summary>Send a message</summary>
+          <form onSubmit={handleSubmit}>
+            {["name", "email", "subject"].map(field => <input key={field} name={field}
+              aria-label={field} placeholder={field[0].toUpperCase() + field.slice(1)}
+              type={field === "email" ? "email" : "text"} required value={formData[field]} onChange={handleChange} />)}
+            <textarea aria-label="Message" placeholder="Message" rows={4} name="message" required value={formData.message} onChange={handleChange} />
+            <button className="folio-button" disabled={isSubmitting}>{isSubmitting ? "Sending…" : "Send message"}</button>
+          </form>
+        </details>
       </div>
     </section>
   );

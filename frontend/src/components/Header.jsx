@@ -1,139 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { Download, Menu, X } from "lucide-react";
+import React from "react";
+import { Search } from "lucide-react";
+import { ReactComponent as BrandMark } from "../assets/gm-logo.svg";
+import { Link } from "react-router-dom";
+import { spaceUrl } from "../lib/spaces";
+import { trackNavigationClick } from "../lib/gtm";
 
-const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const BACKEND_URL = (process.env.REACT_APP_BACKEND_URL || '').trim();
+const links = [
+  ["Work", "home", "case-studies"], ["Skills", "home", "skills"],
+  ["About", "home", "workbench"], ["Wiki", "wiki"], ["Contact", "home", "contact"]
+];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsMobileMenuOpen(false);
-    }
-  };
-
-  const handleDownloadResume = async () => {
-    try {
-      const endpoint = BACKEND_URL
-        ? `${BACKEND_URL}/api/resume/download`
-        : "/api/resume/download";
-      const response = await fetch(endpoint);
-      if (!response.ok) {
-        throw new Error("Failed to download resume");
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "Gunvanth_Madabattula_Resume.pdf";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error downloading resume:", error);
-      alert("Failed to download resume");
-    }
-  };
-
+export default function Header({ onOpenCommand }) {
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-black/95 backdrop-blur-md shadow-lg"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold text-white">
-            <span className="text-amber-400">G</span>unvanth
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {[
-              "about",
-              "experience",
-              "projects",
-              "skills",
-              "certifications",
-              "achievements",
-              "contact",
-            ].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className="text-gray-300 hover:text-amber-400 transition-colors"
-              >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-              </button>
-            ))}
-
-            <Button
-              onClick={handleDownloadResume}
-              className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Resume
-            </Button>
-          </nav>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-white"
-          >
-            {isMobileMenuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 space-y-4">
-            {[
-              "about",
-              "experience",
-              "projects",
-              "skills",
-              "certifications",
-              "achievements",
-              "contact",
-            ].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className="block text-gray-300 hover:text-amber-400 transition-colors"
-              >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-              </button>
-            ))}
-
-            <Button
-              onClick={handleDownloadResume}
-              className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold w-full"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Resume
-            </Button>
-          </nav>
-        )}
+    <header className="folio-header">
+      <div className="folio-wrap folio-nav">
+        <Link className="wordmark" to={spaceUrl("home")} onClick={() => trackNavigationClick("home", "header")} aria-label="Gunvanth Madabattula, home">
+          <BrandMark aria-hidden="true" focusable="false" />
+        </Link>
+        <nav aria-label="Main navigation">
+          {links.map(([label, space, section]) => (
+            <Link key={label} to={spaceUrl(space, section)} onClick={() => trackNavigationClick(section || space, "header")}>{label}</Link>
+          ))}
+          <button className="quick-search" onClick={onOpenCommand} aria-label="Search portfolio" title="Search portfolio (Ctrl or Command + K)"><Search size={17} /></button>
+        </nav>
       </div>
     </header>
   );
-};
-
-export default Header;
+}

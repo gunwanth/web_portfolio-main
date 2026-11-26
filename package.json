@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@react-three/fiber": "^9.6.1",
+    "baseline-browser-mapping": "^2.11.39",
+    "caniuse-lite": "^1.0.30001828",
     "mongodb": "^7.1.0",
     "three": "^0.184.0"
   }

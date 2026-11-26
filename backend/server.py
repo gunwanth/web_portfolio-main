@@ -1,4 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Request, Response
+from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 import os
@@ -62,6 +63,14 @@ async def home():
         "status": "ok",
         "message": "Gunvanth Portfolio API is running"
     }
+
+FRONTEND_FAVICON_PATH = ROOT_DIR.parent / "frontend" / "public" / "favicon.ico"
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    if FRONTEND_FAVICON_PATH.exists():
+        return FileResponse(path=str(FRONTEND_FAVICON_PATH), media_type="image/x-icon")
+    return Response(status_code=204)
 
 # --------------------------------------------------
 # API Router

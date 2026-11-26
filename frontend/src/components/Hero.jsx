@@ -1,110 +1,75 @@
-import React from 'react';
-import { Button } from './ui/button';
-import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react';
-import { personalInfo } from '../data/mock';
-import Antigravity from './Antigravity';
+import React, { useLayoutEffect, useRef, useState } from "react";
+import { ArrowDown, ArrowDownToLine } from "lucide-react";
+import { ReactComponent as BrandMark } from "../assets/gm-logo.svg";
+import Refraction from "./Refraction";
+import { personalInfo } from "../data/mock";
 
-const Hero = () => {
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+let hasOpened = false;
+const names = [
+  { word: "Gunvanth", start: 0, width: 59 },
+  { word: "Madabattula", start: 59, width: 53 }
+];
+
+export default function Hero({ onDownloadResume }) {
+  const hero = useRef(null);
+  const [opening, setOpening] = useState(() => !hasOpened && !window.location.hash &&
+    window.scrollY === 0 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  useLayoutEffect(() => {
+    hasOpened = true;
+    if (!opening) return;
+
+    const section = hero.current;
+    const bounds = section.getBoundingClientRect();
+    const anchors = section.querySelectorAll(".name-anchor");
+    const markHeight = Math.min(88, parseFloat(getComputedStyle(anchors[0]).fontSize) * .8);
+    const left = bounds.left + (bounds.width - markHeight * 112 / 58) / 2;
+    const top = bounds.top + (bounds.height - markHeight) / 2;
+    section.style.setProperty("--mark-height", markHeight + "px");
+    anchors.forEach((anchor, index) => {
+      const rect = anchor.getBoundingClientRect();
+      const slice = names[index];
+      anchor.style.setProperty("--mark-width", markHeight * slice.width / 58 + "px");
+      anchor.style.setProperty("--from-x", left + markHeight * slice.start / 58 - rect.left + "px");
+      anchor.style.setProperty("--from-y", top - rect.top + "px");
+    });
+
+    const finish = () => setOpening(false);
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const skipEvents = ["pointerdown", "keydown", "scroll", "resize"];
+    skipEvents.forEach(type => window.addEventListener(type, finish, { passive: true, once: true }));
+    media.addEventListener("change", finish);
+    const timer = window.setTimeout(finish, 1700);
+    return () => {
+      clearTimeout(timer);
+      skipEvents.forEach(type => window.removeEventListener(type, finish));
+      media.removeEventListener("change", finish);
+    };
+  }, [opening]);
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
-      <div className="absolute inset-0 z-0 opacity-90">
-        <Antigravity
-          count={300}
-          magnetRadius={10}
-          ringRadius={7}
-          waveSpeed={0.7}
-          waveAmplitude={1}
-          particleSize={1.5}
-          lerpSpeed={0.05}
-          color="#7C3AED"
-          autoAnimate
-          particleVariance={1}
-          rotationSpeed={0}
-          depthFactor={1}
-          pulseSpeed={3}
-          particleShape="capsule"
-          fieldStrength={10}
-        />
-      </div>
-      <div className="absolute inset-0 z-[1] bg-black/65"></div>
-      <div className="absolute inset-x-0 bottom-0 z-[1] h-40 bg-gradient-to-t from-black to-transparent"></div>
-
-      <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
-        <div className="text-center">
-          <div className="mb-6 animate-fade-in">
-            <span className="text-amber-300 font-semibold text-lg">Hello, I'm</span>
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in-up">
-            {personalInfo.name}
-          </h1>
-          
-          <h2 className="text-2xl md:text-4xl font-light text-slate-200 mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            {personalInfo.title}
-          </h2>
-          
-          <p className="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-12 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-            {personalInfo.tagline}
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-            <Button
-              onClick={() => scrollToSection('contact')}
-              size="lg"
-              className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold px-8 py-6 text-lg transition-transform hover:scale-105"
-            >
-              <Mail className="w-5 h-5 mr-2" />
-              Get In Touch
-            </Button>
-            <Button
-              onClick={() => scrollToSection('projects')}
-              size="lg"
-              variant="outline"
-              className="border-amber-500 text-amber-400 hover:bg-amber-500 hover:text-slate-900 px-8 py-6 text-lg transition-transform hover:scale-105"
-            >
-              View My Work
-            </Button>
-          </div>
-
-          <div className="flex items-center justify-center gap-6 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-            <a
-              href={personalInfo.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-amber-400 transition-all hover:scale-110"
-            >
-              <Github className="w-7 h-7" />
-            </a>
-            <a
-              href={personalInfo.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-amber-400 transition-all hover:scale-110"
-            >
-              <Linkedin className="w-7 h-7" />
-            </a>
-            <a
-              href={`mailto:${personalInfo.email}`}
-              className="text-gray-400 hover:text-amber-400 transition-all hover:scale-110"
-            >
-              <Mail className="w-7 h-7" />
-            </a>
-          </div>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ArrowDown className="w-6 h-6 text-amber-400" />
+    <section ref={hero} className="folio-hero" data-opening={opening || undefined} aria-labelledby="intro-name">
+      <div className="intro-copy">
+        <p className="folio-meta">{personalInfo.currentRole}</p>
+        <h1 id="intro-name" aria-label="Gunvanth Madabattula">
+          {names.map(({ word, start, width }) => (
+            <span className="name-line" aria-hidden="true" key={word}>
+              <span className="name-anchor">
+                <span className="name-initial">
+                  {opening && <BrandMark className="name-facet" viewBox={`${start} 0 ${width} 58`} focusable="false" />}
+                  <span className="name-letter">{word[0]}</span>
+                </span>
+              </span><span className="name-rest">{word.slice(1)}</span>
+            </span>
+          ))}
+        </h1>
+        <p className="intro-text">I build search tools and AI applications at {personalInfo.currentCompany} in {personalInfo.location.split(",")[0]}.</p>
+        <div className="intro-actions">
+          <a className="folio-button" href="#case-studies">View my work <ArrowDown size={15} /></a>
+          <button className="folio-link" onClick={onDownloadResume}>Résumé <ArrowDownToLine size={14} /></button>
         </div>
       </div>
+      <Refraction />
     </section>
   );
-};
-
-export default Hero;
+}

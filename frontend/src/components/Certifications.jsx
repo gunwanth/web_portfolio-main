@@ -1,34 +1,44 @@
-import React from 'react';
-import { Card } from './ui/card';
-import { Award, CheckCircle2 } from 'lucide-react';
-import { certifications } from '../data/mock';
+import React from "react";
+import { Award, CheckCircle2 } from "lucide-react";
+import { certifications } from "../data/mock";
 
 const Certifications = () => {
   return (
-    <section className="py-20 bg-black">
-      <div className="max-w-7xl mx-auto px-6">
-
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <section className="py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {certifications.map((cert) => (
-            <Card
+            <div
               key={cert.id}
-              className="p-6 hover:shadow-lg transition-all hover:-translate-y-1 group border-l-4 border-amber-500 bg-black border-slate-800"
+              className="pf-card p-5 flex items-start gap-4 justify-between"
             >
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-amber-100 rounded-lg group-hover:bg-amber-200 transition-colors">
-                  <Award className="w-6 h-6 text-amber-600" />
+              <div className="flex items-start gap-3.5">
+                <div className="p-2.5 rounded-xl pf-badge-accent flex-shrink-0">
+                  <Award className="w-5 h-5" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg text-white mb-2 leading-tight">
+                <div>
+                  <h3 className="font-display font-bold text-sm sm:text-base leading-snug mb-1">
                     {cert.name}
                   </h3>
-                  <p className="text-sm text-amber-600 font-medium mb-1">{cert.provider}</p>
-                  <p className="text-xs text-slate-400">{cert.year}</p>
+                  <p
+                    className="text-xs font-mono font-medium"
+                    style={{ color: "var(--pf-accent-text)" }}
+                  >
+                    {cert.provider}
+                  </p>
+                  <p
+                    className="text-[11px] font-mono mt-1"
+                    style={{ color: "var(--pf-text-muted)" }}
+                  >
+                    Issued · {cert.year}
+                  </p>
                 </div>
-                <CheckCircle2 className="w-5 h-5 text-green-500" />
               </div>
-            </Card>
+              <CheckCircle2
+                className="w-4 h-4 flex-shrink-0 mt-1"
+                style={{ color: "var(--pf-success)" }}
+              />
+            </div>
           ))}
         </div>
       </div>

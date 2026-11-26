@@ -1,17 +1,230 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="light" data-theme="clinical-paper">
   <head>
+    <!-- Google Tag Manager (loads only when REACT_APP_GTM_ID is configured) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      (function (w, d, s, l, i) {
+        if (!i || i === 'GTM-XXXXXXX' || i.indexOf('REACT_APP_GTM_ID') !== -1 || !/^GTM-[A-Z0-9]+$/i.test(i)) {
+          return;
+        }
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0];
+        var j = d.createElement(s);
+        var dl = l !== 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.id = 'gtm-script';
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', '%REACT_APP_GTM_ID%');
+    </script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Gunvanth's AI/ML & Fullstack Portfolio" />
+    <meta name="theme-color" content="#f7f5ee" />
+    <meta name="color-scheme" content="dark light" />
 
-    <title>Gunvanth | Portfolio</title>
+    <!-- Primary SEO Meta Tags -->
+    <title>Gunvanth Madabattula | AI Engineer &amp; Systems Portfolio</title>
+    <meta
+      name="description"
+      content="Gunvanth Madabattula — AI Engineer | Generative AI | Agentic AI | Full Stack Development. Interactive Case Studies, Live Motion Architectures, Benchmarks &amp; Engineering Wiki."
+    />
+    <meta
+      name="keywords"
+      content="Gunvanth Madabattula, Full Stack AI Engineer, AI/ML Engineer, Agentic AI Developer, RAG Engineer, Graph-RAG, LLM Engineer, Generative AI, React, FastAPI, Python, AAVI Labs, Visakhapatnam"
+    />
+    <meta name="author" content="Gunvanth Madabattula" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <link rel="canonical" id="canonical-link" href="https://gunvanth.dev/" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48 64x64" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="%PUBLIC_URL%/g-tab.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/gunvanth-tab-32.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/gm-icon-180.png" />
 
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Gunvanth Madabattula Portfolio" />
+    <meta
+      property="og:title"
+      content="Gunvanth Madabattula | AI Engineer &amp; Systems Portfolio"
+    />
+    <meta
+      property="og:description"
+      content="AI Engineer | Generative AI | Agentic AI | Full Stack Development. Interactive Case Studies, Live Motion Architectures, Benchmarks &amp; Engineering Wiki."
+    />
+    <meta property="og:url" content="https://gunvanth.dev/" />
+    <meta property="og:image" content="https://gunvanth.dev/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Gunvanth Madabattula — Full Stack AI/ML Engineer, Agentic AI Developer, RAG &amp; LLM Engineer"
+    />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Gunvanth Madabattula | AI Engineer &amp; Systems Portfolio"
+    />
+    <meta
+      name="twitter:description"
+      content="Interactive Case Studies, Live Motion Architectures, Benchmarks &amp; Engineering Wiki."
+    />
+    <meta name="twitter:image" content="https://gunvanth.dev/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="Gunvanth Madabattula — Full Stack AI/ML Engineer Portfolio"
+    />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://gunvanth.dev/#website",
+            "url": "https://gunvanth.dev/",
+            "name": "Gunvanth Madabattula Portfolio",
+            "description": "Portfolio & Engineering Wiki of Gunvanth Madabattula — Full Stack AI Engineer specializing in Generative AI, Agentic AI, RAG, and Graph-RAG systems.",
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://gunvanth.dev/#profilepage",
+            "url": "https://gunvanth.dev/",
+            "name": "Gunvanth Madabattula | AI Engineer & Systems Portfolio",
+            "isPartOf": {
+              "@id": "https://gunvanth.dev/#website"
+            },
+            "mainEntity": {
+              "@id": "https://gunvanth.dev/#person"
+            },
+            "hasPart": [
+              {
+                "@type": "SoftwareApplication",
+                "name": "NexaCore",
+                "applicationCategory": "AIApplication",
+                "description": "Full-stack agentic AI chat platform powered by SambaNova & Hugging Face APIs with an autonomous Dino ReAct agent, web grounding, and persistent RAG knowledge base.",
+                "codeRepository": "https://github.com/gunwanth/FuboticsAI",
+                "author": { "@id": "https://gunvanth.dev/#person" }
+              },
+              {
+                "@type": "SoftwareApplication",
+                "name": "AI Rule Builder",
+                "applicationCategory": "DeveloperApplication",
+                "description": "React and React Flow workspace for designing rule pipelines, simulating executions, and generating Agent Data Protocol outputs across multiple domains.",
+                "codeRepository": "https://github.com/gunwanth/RuleManagement",
+                "author": { "@id": "https://gunvanth.dev/#person" }
+              },
+              {
+                "@type": "SoftwareApplication",
+                "name": "Disease Prediction Model",
+                "applicationCategory": "MedicalApplication",
+                "description": "Machine learning system that predicts diseases based on user-input symptoms with a Flask web interface.",
+                "codeRepository": "https://github.com/gunwanth/Disease_Analyzer",
+                "author": { "@id": "https://gunvanth.dev/#person" }
+              },
+              {
+                "@type": "SoftwareApplication",
+                "name": "Sentinel",
+                "applicationCategory": "SecurityApplication",
+                "description": "AI-powered security platform for detecting phishing emails and SMS messages using ML models, channel-aware ingestion pipelines, and agentic RAG workflows.",
+                "codeRepository": "https://github.com/gunwanth/Safechat_Intelligent_Messaging_System",
+                "author": { "@id": "https://gunvanth.dev/#person" }
+              },
+              {
+                "@type": "SoftwareApplication",
+                "name": "Stock Tracker",
+                "applicationCategory": "FinanceApplication",
+                "description": "Real-time stock market tracking application that monitors stock prices, displays market trends, and provides analytical insights.",
+                "codeRepository": "https://github.com/gunwanth/stock_tracker",
+                "author": { "@id": "https://gunvanth.dev/#person" }
+              },
+              {
+                "@type": "SoftwareApplication",
+                "name": "Agent Control Protocol",
+                "applicationCategory": "DeveloperApplication",
+                "description": "Standardized protocol workflow for collecting, processing, validating, and converting agent training data into supervised fine-tuning formats.",
+                "url": "https://www.agentdataprotocol.com/",
+                "codeRepository": "https://github.com/neulab/agent-data-protocol",
+                "author": { "@id": "https://gunvanth.dev/#person" }
+              }
+            ]
+          },
+          {
+            "@type": "Person",
+            "@id": "https://gunvanth.dev/#person",
+            "name": "Gunvanth Madabattula",
+            "url": "https://gunvanth.dev/",
+            "image": "https://gunvanth.dev/og-image.png",
+            "jobTitle": "Full Stack AI Engineer | Generative AI | Agentic AI | Full Stack Development",
+            "worksFor": {
+              "@type": "Organization",
+              "name": "AAVI Labs"
+            },
+            "description": "Full Stack AI Engineer at AAVI Labs and CSE (AI & ML) graduate building multi-step Agentic RAG pipelines, rubric-based evaluation harnesses, Graph-RAG knowledge control planes, and enterprise full-stack software.",
+            "email": "mailto:gunvanth752004@gmail.com",
+            "telephone": "+91-6303157119",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Visakhapatnam",
+              "addressRegion": "Andhra Pradesh",
+              "addressCountry": "IN"
+            },
+            "alumniOf": {
+              "@type": "CollegeOrUniversity",
+              "name": "Gayatri Vidya Parishad College of Engineering"
+            },
+            "sameAs": [
+              "https://github.com/gunwanth",
+              "https://www.linkedin.com/in/gunvanth-m/"
+            ],
+            "knowsAbout": [
+              "Artificial Intelligence",
+              "Machine Learning",
+              "Generative AI",
+              "Agentic AI",
+              "Retrieval-Augmented Generation (RAG)",
+              "Graph-RAG",
+              "Large Language Models (LLMs)",
+              "Semantic Search",
+              "Vector Databases",
+              "React",
+              "Node.js",
+              "FastAPI",
+              "Python",
+              "PostgreSQL",
+              "Google Cloud Platform"
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
 
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=%REACT_APP_GTM_ID%"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        title="Google Tag Manager"
+      ></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>

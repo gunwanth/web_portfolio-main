@@ -1,174 +1,141 @@
-/* Section reveal and hero zoom animations.
-   These avoid CSS scroll timelines so production browsers render reliably. */
+/* Formal Architectural Section Reveal
+   Replaces the oversized 42vh blank spacer with a high-density, scannable engineering section header. */
 
 .section-reveal-wrapper {
   position: relative;
-  background: #000;
+  background-color: var(--pf-canvas);
   overflow-x: clip;
+  border-top: 1px solid var(--pf-border);
 }
 
 .section-reveal-scene {
   position: relative;
   width: 100%;
-  min-height: 42vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  perspective: 1400px;
-  overflow: hidden;
-  background: #000;
-  z-index: 1;
-  pointer-events: none;
-  padding: 5rem 1rem 2rem;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem 1.25rem;
+  z-index: 2;
 }
 
 .section-reveal-inner {
-  text-align: center;
-  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
-.section-reveal-title {
-  font-size: clamp(2.8rem, 10vw, 9rem);
-  font-weight: 900;
-  letter-spacing: 0;
-  line-height: 1;
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 40%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  display: block;
-  white-space: nowrap;
+.section-reveal-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   opacity: 0;
-  transform: perspective(1400px) scale(0.22) translateZ(-1200px);
-  filter: blur(28px);
+  transform: translateY(10px);
   transition:
-    opacity 800ms ease,
-    transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 900ms ease;
-  will-change: transform, opacity, filter;
+    opacity 500ms ease,
+    transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-reveal-index {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.375rem;
+  background-color: var(--pf-accent-subtle);
+  color: var(--pf-accent-text);
+  border: 1px solid var(--pf-border-strong);
+  letter-spacing: 0.05em;
 }
 
 .section-reveal-sub {
-  display: block;
-  font-size: clamp(0.85rem, 1.8vw, 1.2rem);
-  color: #94a3b8;
-  margin-bottom: 0.75rem;
-  font-weight: 300;
-  letter-spacing: 0.18em;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  color: var(--pf-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  opacity: 0;
-  transform: translateY(24px) scale(0.85);
-  transition:
-    opacity 650ms ease 120ms,
-    transform 700ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
 }
 
-.section-reveal-accent {
-  height: 4px;
-  background: linear-gradient(90deg, #f59e0b, #f97316);
-  margin: 1rem auto 0;
-  border-radius: 2px;
-  width: 0;
-  opacity: 0;
-  transition:
-    width 700ms cubic-bezier(0.16, 1, 0.3, 1) 240ms,
-    opacity 500ms ease 240ms;
+.section-reveal-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1.5rem;
 }
 
+.section-reveal-title {
+  font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+  font-size: clamp(1.85rem, 3.6vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--pf-text-primary);
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 600ms ease 80ms,
+    transform 650ms cubic-bezier(0.16, 1, 0.3, 1) 80ms;
+}
+
+.section-reveal-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--pf-border-strong) 0%, var(--pf-border) 60%, transparent 100%);
+  opacity: 0;
+  transform: scaleX(0.2);
+  transform-origin: left center;
+  transition:
+    opacity 600ms ease 180ms,
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1) 180ms;
+}
+
+.is-heading-visible .section-reveal-meta-row,
 .is-heading-visible .section-reveal-title {
   opacity: 1;
-  transform: perspective(1400px) scale(1) translateZ(0);
-  filter: blur(0);
+  transform: translateY(0);
 }
 
-.is-heading-visible .section-reveal-sub {
+.is-heading-visible .section-reveal-rule {
   opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.is-heading-visible .section-reveal-accent {
-  width: 6rem;
-  opacity: 1;
+  transform: scaleX(1);
 }
 
 .section-reveal-content-vt {
   position: relative;
-  z-index: 10;
-  background: #000;
+  z-index: 5;
 }
 
 .section-reveal-content {
   position: relative;
-  background: #000;
-  overflow: hidden;
   opacity: 0;
-  transform: perspective(1200px) scale(0.82) translateZ(-220px);
-  filter: blur(18px);
+  transform: translateY(18px);
   transition:
-    opacity 750ms ease,
-    transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 900ms ease;
-  will-change: transform, opacity, filter;
+    opacity 600ms ease,
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .section-reveal-content.is-content-visible {
   opacity: 1;
-  transform: perspective(1200px) scale(1) translateZ(0);
-  filter: blur(0);
-}
-
-.hero-zoom-wrapper {
-  position: relative;
-}
-
-.hero-sticky {
-  --hero-scale: 1;
-  --hero-opacity: 1;
-  --hero-blur: 0px;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  overflow: hidden;
-  transform: perspective(1200px) scale(var(--hero-scale)) translateZ(0);
-  opacity: var(--hero-opacity);
-  filter: blur(var(--hero-blur));
-  transform-origin: center center;
-  will-change: transform, opacity, filter;
-}
-
-.hero-zoom-spacer {
-  height: 100vh;
-  pointer-events: none;
+  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .section-reveal-meta-row,
   .section-reveal-title,
-  .section-reveal-sub,
-  .section-reveal-accent,
-  .section-reveal-content,
-  .hero-sticky {
+  .section-reveal-rule,
+  .section-reveal-content {
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;
-    filter: none !important;
-  }
-
-  .section-reveal-accent {
-    width: 6rem !important;
-  }
-
-  .hero-zoom-spacer {
-    display: none;
   }
 }
 
 @media (max-width: 640px) {
   .section-reveal-scene {
-    min-height: 34vh;
-    padding: 4rem 1rem 1.5rem;
+    padding: 3.25rem 1.25rem 0.75rem;
   }
-
-  .section-reveal-title {
-    white-space: normal;
+  .section-reveal-rule {
+    display: none;
   }
 }

@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './SectionReveal.css';
+import React, { useEffect, useRef, useState } from "react";
+import "./SectionReveal.css";
+import { trackSectionView } from "../lib/gtm";
 
-const SectionReveal = ({ title, subtitle, id, children }) => {
+const SectionReveal = ({ index, title, subtitle, id, children }) => {
   const wrapperRef = useRef(null);
   const contentRef = useRef(null);
+  const hasTrackedViewRef = useRef(false);
   const [headingVisible, setHeadingVisible] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
 
@@ -11,19 +13,29 @@ const SectionReveal = ({ title, subtitle, id, children }) => {
     const wrapper = wrapperRef.current;
     const content = contentRef.current;
 
-    if (!wrapper || !content || typeof IntersectionObserver === 'undefined') {
+    if (!wrapper || !content || typeof IntersectionObserver === "undefined") {
       setHeadingVisible(true);
       setContentVisible(true);
       return undefined;
     }
 
     const headingObserver = new IntersectionObserver(
-      ([entry]) => setHeadingVisible(entry.isIntersecting),
-      { threshold: 0.2 }
+      ([entry]) => {
+        if (entry.isIntersecting) setHeadingVisible(true);
+      },
+      { threshold: 0.08 }
     );
     const contentObserver = new IntersectionObserver(
-      ([entry]) => setContentVisible(entry.isIntersecting),
-      { rootMargin: '0px 0px -15% 0px', threshold: 0.12 }
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setContentVisible(true);
+          if (!hasTrackedViewRef.current) {
+            hasTrackedViewRef.current = true;
+            trackSectionView(id, title);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
     );
 
     headingObserver.observe(wrapper);
@@ -33,24 +45,29 @@ const SectionReveal = ({ title, subtitle, id, children }) => {
       headingObserver.disconnect();
       contentObserver.disconnect();
     };
-  }, []);
+  }, [id, title]);
 
   return (
     <div
-      className={`section-reveal-wrapper ${headingVisible ? 'is-heading-visible' : ''}`}
+      className={`section-reveal-wrapper ${headingVisible ? "is-heading-visible" : ""}`}
       id={id}
       ref={wrapperRef}
     >
-      <div className="section-reveal-scene" aria-hidden="true">
+      <div className="section-reveal-scene">
         <div className="section-reveal-inner">
-          {subtitle && <span className="section-reveal-sub">{subtitle}</span>}
-          <span className="section-reveal-title">{title}</span>
-          <div className="section-reveal-accent" />
+          <div className="section-reveal-meta-row">
+            {index && <span className="section-reveal-index">{index}</span>}
+            {subtitle && <span className="section-reveal-sub">{subtitle}</span>}
+          </div>
+          <div className="section-reveal-title-row">
+            <h2 className="section-reveal-title">{title}</h2>
+            <div className="section-reveal-rule" aria-hidden="true" />
+          </div>
         </div>
       </div>
 
       <div className="section-reveal-content-vt" ref={contentRef}>
-        <div className={`section-reveal-content ${contentVisible ? 'is-content-visible' : ''}`}>
+        <div className={`section-reveal-content ${contentVisible ? "is-content-visible" : ""}`}>
           {children}
         </div>
       </div>

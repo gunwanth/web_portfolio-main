@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://gunvanth.dev/</loc>
+  </url>
+  <url>
+    <loc>https://gunvanth.dev/?space=wiki</loc>
+  </url>
+  <url>
+    <loc>https://gunvanth.dev/?space=agentic-rag-chatbot</loc>
+  </url>
+  <url>
+    <loc>https://gunvanth.dev/?space=stockgenius-ai-trading</loc>
+  </url>
+  <url>
+    <loc>https://gunvanth.dev/?space=aavi-labs-service-platform</loc>
+  </url>
+  <url>
+    <loc>https://gunvanth.dev/?space=datax-enterprise-semantic-platform</loc>
+  </url>
+  <url>
+    <loc>https://gunvanth.dev/?space=deskhand-ultron-computer-agent</loc>
+  </url>
+  <url>
+    <loc>https://gunvanth.dev/?space=thinkova-edtech-platform</loc>
+  </url>
+  <url>
+    <loc>https://gunvanth.dev/?space=sap-supply-chain-graph-rag</loc>
+  </url>
+  <url>
+    <loc>https://gunvanth.dev/?space=nexacore-adp-sentinel</loc>
+  </url>
+</urlset>
