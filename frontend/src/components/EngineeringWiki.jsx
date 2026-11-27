@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ScrollReveal from "./ScrollReveal";
 import {
   FileCode2,
   CheckCircle2,
@@ -51,7 +52,7 @@ const EngineeringWiki = ({ isStandaloneScreen = false, onBack }) => {
   };
 
   return (
-    <div className={isStandaloneScreen ? "folio-detail animate-fade-in" : ""}>
+    <div className={isStandaloneScreen ? "folio-detail" : ""}>
       <div className="folio-wrap">
         {isStandaloneScreen && onBack && (
           <div className="mb-6">
@@ -131,9 +132,9 @@ const EngineeringWiki = ({ isStandaloneScreen = false, onBack }) => {
 
           {/* Tab 1: System Architectures */}
           {activeTab.id === "architecture" && (
-            <div className="grid md:grid-cols-2 gap-4 animate-fade-in">
+            <div className="grid md:grid-cols-2 gap-4">
               {activeTab.items.map((item) => (
-                <div
+                <ScrollReveal
                   key={item.id}
                   className="p-5 rounded-xl pf-surface-raised flex flex-col justify-between"
                 >
@@ -197,16 +198,16 @@ const EngineeringWiki = ({ isStandaloneScreen = false, onBack }) => {
                   >
                     Stack: {item.stack}
                   </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
           )}
 
           {/* Tab 2: Architecture Decision Records (ADRs) */}
           {activeTab.id === "decisions" && (
-            <div className="grid md:grid-cols-3 gap-4 animate-fade-in">
+            <div className="grid md:grid-cols-3 gap-4">
               {activeTab.items.map((adr) => (
-                <div
+                <ScrollReveal
                   key={adr.id}
                   className="p-5 rounded-xl pf-surface-raised flex flex-col justify-between"
                 >
@@ -259,14 +260,14 @@ const EngineeringWiki = ({ isStandaloneScreen = false, onBack }) => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
           )}
 
           {/* Tab 3: Delivery & Impact Log Table */}
           {activeTab.id === "delivery" && (
-            <div className="overflow-x-auto animate-fade-in">
+            <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs sm:text-sm">
                 <thead>
                   <tr
@@ -284,7 +285,7 @@ const EngineeringWiki = ({ isStandaloneScreen = false, onBack }) => {
                 </thead>
                 <tbody>
                   {activeTab.items.map((row) => (
-                    <tr
+                    <ScrollReveal as="tr"
                       key={row.id}
                       className="border-b hover:bg-[var(--pf-surface-raised)] transition-colors"
                       style={{ borderColor: "var(--pf-border)" }}
@@ -309,7 +310,7 @@ const EngineeringWiki = ({ isStandaloneScreen = false, onBack }) => {
                       >
                         {row.outcome}
                       </td>
-                    </tr>
+                    </ScrollReveal>
                   ))}
                 </tbody>
               </table>

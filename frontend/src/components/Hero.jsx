@@ -70,7 +70,7 @@ export default function Hero({ onDownloadResume }) {
             </span>
           ))}
         </h1>
-        <p className="intro-text">I build search tools and AI applications at {personalInfo.currentCompany} in {personalInfo.location.split(",")[0]}.</p>
+        <p className="intro-text">I develop search tools and AI applications at Bangalore-based {personalInfo.currentCompany}, working remotely from {personalInfo.location.split(",")[0]}.</p>
         <div className="intro-actions">
           <a className="folio-button" href="#case-studies">View my work <ArrowDown size={15} /></a>
           <button className="folio-link" onClick={onDownloadResume}>Résumé <ArrowDownToLine size={14} /></button>

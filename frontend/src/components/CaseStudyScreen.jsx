@@ -12,12 +12,13 @@ import {
   Layers
 } from "lucide-react";
 import { projects } from "../data/mock";
+import ScrollReveal from "./ScrollReveal";
 
 const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
   if (!project) return null;
 
   return (
-    <main className="folio-detail animate-fade-in">
+    <main className="folio-detail">
       <div className="folio-wrap">
         {/* Top Action & Dropdown Switcher Bar */}
         <div
@@ -85,7 +86,7 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
         </div>
 
         {/* Case Study Header */}
-        <div className="mb-8">
+        <ScrollReveal className="mb-8">
           <div className="flex flex-wrap items-center gap-2.5 mb-3">
             <span className="pf-badge-accent px-3 py-1 rounded-md text-xs font-mono font-semibold">
               {project.category}
@@ -126,13 +127,13 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
               </span>
             ))}
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* 1. Hard Numbers & Verified Benchmarks */}
         {project.benchmarks && (
           <div className="grid sm:grid-cols-3 gap-4 mb-8">
             {project.benchmarks.map((b, idx) => (
-              <div key={idx} className="pf-card p-5">
+              <ScrollReveal key={idx} className="pf-card p-5">
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span
                     className="text-xs font-mono uppercase tracking-wider"
@@ -154,14 +155,14 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
                 >
                   {b.note}
                 </p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         )}
 
         {/* 2. Problem Bottleneck vs. Architectural Trade-Offs */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <div className="pf-card p-6">
+          <ScrollReveal className="pf-card p-6">
             <div
               className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider mb-2.5"
               style={{ color: "var(--pf-accent-text)" }}
@@ -175,9 +176,9 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
             >
               {project.problem}
             </p>
-          </div>
+          </ScrollReveal>
 
-          <div className="pf-card p-6">
+          <ScrollReveal className="pf-card p-6">
             <div
               className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider mb-2.5"
               style={{ color: "var(--pf-success)" }}
@@ -191,7 +192,7 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
             >
               {project.tradeoffs}
             </p>
-          </div>
+          </ScrollReveal>
         </div>
 
         {/* 4. End-to-End Execution Lifecycle (4 Phases) */}
@@ -206,7 +207,7 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {project.endToEnd.map((step, idx) => (
-                <div key={idx} className="p-4 rounded-xl pf-surface-raised">
+                <ScrollReveal key={idx} className="p-4 rounded-xl pf-surface-raised">
                   <div
                     className="text-[11px] font-mono font-bold uppercase mb-1"
                     style={{ color: "var(--pf-accent-text)" }}
@@ -219,7 +220,7 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
                   >
                     {step.detail}
                   </p>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
           </div>
@@ -236,7 +237,7 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
             </div>
             <div className="space-y-3">
               {project.highlights.map((hl, idx) => (
-                <div
+                <ScrollReveal
                   key={idx}
                   className="flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed"
                   style={{ color: "var(--pf-text-secondary)" }}
@@ -246,13 +247,13 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
                     style={{ color: "var(--pf-accent)" }}
                   />
                   <span>{hl}</span>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
           </div>
 
           <div className="lg:col-span-5 space-y-4">
-            <div className="pf-card p-5">
+            <ScrollReveal className="pf-card p-5">
               <div
                 className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider mb-2"
                 style={{ color: "var(--pf-accent-text)" }}
@@ -266,9 +267,9 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
               >
                 {project.gained}
               </p>
-            </div>
+            </ScrollReveal>
 
-            <div className="pf-card p-5">
+            <ScrollReveal className="pf-card p-5">
               <div
                 className="flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider mb-2"
                 style={{ color: "var(--pf-success)" }}
@@ -282,7 +283,7 @@ const CaseStudyScreen = ({ project, onBack, onSelectProject }) => {
               >
                 {project.impact}
               </p>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </div>

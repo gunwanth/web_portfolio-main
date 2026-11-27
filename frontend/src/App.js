@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Projects from "./components/Projects";
 import Skills from "./components/Skills";
+import ScrollReveal from "./components/ScrollReveal";
 import WorkbenchSection from "./components/WorkbenchSection";
 import CaseStudyScreen from "./components/CaseStudyScreen";
 import EngineeringWiki from "./components/EngineeringWiki";
@@ -182,6 +183,7 @@ function App() {
       {/* VIEW 1: Dedicated Full-Screen Case Study & Live Motion Architecture Screen */}
       {selectedProject && (
         <CaseStudyScreen
+          key={selectedProject.slug}
           project={selectedProject}
           onBack={() => handleNavigateHome("case-studies")}
           onSelectProject={handleOpenProjectScreen}
@@ -214,8 +216,10 @@ function App() {
 
       {!selectedProject && spaceId !== "home" && spaceId !== "wiki" && (
         <main className="folio-wrap folio-detail">
-          <h1 className="detail-title">Page not found</h1>
-          <Link className="folio-link" to={spaceUrl("home")}>Return to portfolio</Link>
+          <ScrollReveal>
+            <h1 className="detail-title">Page not found</h1>
+            <Link className="folio-link" to={spaceUrl("home")}>Return to portfolio</Link>
+          </ScrollReveal>
         </main>
       )}
 

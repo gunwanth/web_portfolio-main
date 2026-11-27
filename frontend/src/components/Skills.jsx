@@ -1,6 +1,7 @@
 import React from "react";
 import { skills } from "../data/mock";
 import SkillLogo from "../assets/SkillLogo";
+import ScrollReveal from "./ScrollReveal";
 
 const groups = [
   { title: "Languages", tools: [["python", "Python"], ["java", "Java"], ["javascript", "JavaScript"], ["typescript", "TypeScript"]] },
@@ -19,10 +20,10 @@ const skillNames = {
 export default function Skills() {
   return (
     <section id="skills" className="folio-wrap skills-section" aria-labelledby="skills-heading">
-      <div className="folio-section-head"><h2 id="skills-heading">Skills & tools</h2></div>
+      <ScrollReveal className="folio-section-head"><h2 id="skills-heading">Skills & tools</h2></ScrollReveal>
       <div className="skills-grid">
         {groups.map(({ title, tools }) => (
-          <div className="skill-group" key={title}>
+          <ScrollReveal className="skill-group" key={title}>
             <h3>{title}</h3>
             <ul>{tools.map(([id, name]) => (
               <li key={id}>
@@ -30,15 +31,15 @@ export default function Skills() {
                 <span>{name}</span>
               </li>
             ))}</ul>
-          </div>
+          </ScrollReveal>
         ))}
       </div>
-      <details className="skills-index">
+      <ScrollReveal as="details" className="skills-index">
         <summary>Full skills list</summary>
         <dl>{Object.entries(skillNames).map(([key, label]) => (
           <div key={key}><dt>{label}</dt><dd>{skills[key].join(", ")}</dd></div>
         ))}</dl>
-      </details>
+      </ScrollReveal>
     </section>
   );
 }

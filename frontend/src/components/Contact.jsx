@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ScrollReveal from "./ScrollReveal";
 import { Copy, Check } from "lucide-react";
 import { personalInfo } from "../data/mock";
 import { toast } from "../hooks/use-toast";
@@ -73,9 +74,9 @@ const Contact = ({ onDownloadResume }) => {
 
   return (
     <section className="folio-wrap contact-section">
-      <h2>Contact</h2>
+      <ScrollReveal as="h2">Contact</ScrollReveal>
       <div className="contact-layout">
-        <address>
+        <ScrollReveal as="address">
           {[[ "Email", personalInfo.email, "mailto:" ], [ "Phone", personalInfo.phone, "tel:" ]].map(([label, value, prefix]) =>
             <div key={label}><a href={prefix + value}>{value}</a>
               <button aria-label={`Copy ${label.toLowerCase()}`} onClick={() => handleCopy(label, value)}>
@@ -88,8 +89,8 @@ const Contact = ({ onDownloadResume }) => {
             <a href={personalInfo.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>
             <button className="folio-link" onClick={onDownloadResume}>Résumé ↓</button>
           </div>
-        </address>
-        <details><summary>Send a message</summary>
+        </ScrollReveal>
+        <ScrollReveal as="details"><summary>Send a message</summary>
           <form onSubmit={handleSubmit}>
             {["name", "email", "subject"].map(field => <input key={field} name={field}
               aria-label={field} placeholder={field[0].toUpperCase() + field.slice(1)}
@@ -97,7 +98,7 @@ const Contact = ({ onDownloadResume }) => {
             <textarea aria-label="Message" placeholder="Message" rows={4} name="message" required value={formData.message} onChange={handleChange} />
             <button className="folio-button" disabled={isSubmitting}>{isSubmitting ? "Sending…" : "Send message"}</button>
           </form>
-        </details>
+        </ScrollReveal>
       </div>
     </section>
   );
