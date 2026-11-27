@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useStaticMotion } from "../hooks/useStaticMotion";
 import { projects } from "../data/mock";
 import { Link } from "react-router-dom";
 import { spaceUrl } from "../lib/spaces";
@@ -9,7 +10,12 @@ import { trackProjectClick } from "../lib/gtm";
 export default function Projects() {
   const [category, setCategory] = useState("All disciplines");
   const [expanded, setExpanded] = useState(false);
-  const reduced = useReducedMotion();
+  const staticMotion = useStaticMotion();
+  const Row = staticMotion ? "li" : motion.li;
+  const reveal = staticMotion ? {} : {
+    initial: { opacity: 0, y: 8 }, whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true }, transition: { duration: .32 }
+  };
   const all = category === "All disciplines";
   const filtered = all ? projects : projects.filter(p => category === "Résumé projects" ? p.resumeProject : p.category === category);
   const visible = all && !expanded ? filtered.slice(0, 3) : filtered;
@@ -26,15 +32,14 @@ export default function Projects() {
       </div>
       <ul className="project-list">
         {visible.map(project => (
-          <motion.li key={project.slug} initial={reduced ? false : { opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: .32 }}>
+          <Row key={project.slug} {...reveal}>
             <Link className="project-row" to={spaceUrl(project.slug)}
               onClick={() => trackProjectClick(project.title, "case_study_screen", spaceUrl(project.slug))}>
               <span className="project-name">{project.title.split(" – ")[0]}</span>
               <span className="project-domain">{project.category}</span>
               <span className="project-open"><ArrowUpRight size={20} /></span>
             </Link>
-          </motion.li>
+          </Row>
         ))}
       </ul>
       {all && filtered.length > 3 && <button className="folio-link archive-toggle" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>

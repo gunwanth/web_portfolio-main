@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useStaticMotion } from "../hooks/useStaticMotion";
 
 // Each facet samples the same strip of light from a different angle.
 function drawLens(canvas, x, y) {
@@ -61,9 +62,9 @@ const clamp = value => Math.max(-1, Math.min(1, value));
 
 export default function Refraction() {
   const ref = useRef(null);
+  const staticMotion = useStaticMotion();
   useEffect(() => {
     const canvas = ref.current;
-    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     let x = 0, y = 0, targetX = 0, targetY = 0;
     let frame = 0, lastTime = 0;
 
@@ -83,7 +84,6 @@ export default function Refraction() {
     }
 
     function aim(nextX, nextY) {
-      if (preference.matches) return;
       targetX = clamp(nextX);
       targetY = clamp(nextY);
       if (!frame) frame = requestAnimationFrame(advance);
@@ -113,18 +113,10 @@ export default function Refraction() {
       canvas.height = Math.max(1, Math.round(canvas.clientHeight * ratio));
       drawLens(canvas, x, y);
     }
-    function applyPreference() {
-      cancelAnimationFrame(frame);
-      frame = lastTime = x = y = targetX = targetY = 0;
-      canvas.tabIndex = preference.matches ? -1 : 0;
-      drawLens(canvas, x, y);
-    }
-
     resize();
-    applyPreference();
     const observer = new ResizeObserver(resize);
     observer.observe(canvas);
-    preference.addEventListener("change", applyPreference);
+    if (staticMotion) return () => observer.disconnect();
     canvas.addEventListener("pointermove", point);
     canvas.addEventListener("pointerdown", point);
     canvas.addEventListener("pointerleave", leave);
@@ -132,16 +124,15 @@ export default function Refraction() {
     return () => {
       observer.disconnect();
       cancelAnimationFrame(frame);
-      preference.removeEventListener("change", applyPreference);
       canvas.removeEventListener("pointermove", point);
       canvas.removeEventListener("pointerdown", point);
       canvas.removeEventListener("pointerleave", leave);
       canvas.removeEventListener("keydown", key);
     };
-  }, []);
+  }, [staticMotion]);
 
   return <figure className="refraction">
-    <canvas ref={ref} role="img" aria-label="Radially cut glass refracting a band of orange light" aria-describedby="prism-controls" />
-    <figcaption id="prism-controls"><span>Sector refraction</span><span className="prism-hint">Move, tap, or use arrow keys</span></figcaption>
+    <canvas ref={ref} tabIndex={staticMotion ? undefined : 0} role="img" aria-label="Radially cut glass refracting a band of orange light" aria-describedby={staticMotion ? undefined : "prism-controls"} />
+    <figcaption><span>Sector refraction</span>{!staticMotion && <span id="prism-controls" className="prism-hint">Move, tap, or use arrow keys</span>}</figcaption>
   </figure>;
 }

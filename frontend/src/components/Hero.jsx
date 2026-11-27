@@ -3,6 +3,7 @@ import { ArrowDown, ArrowDownToLine } from "lucide-react";
 import { ReactComponent as BrandMark } from "../assets/gm-logo.svg";
 import Refraction from "./Refraction";
 import { personalInfo } from "../data/mock";
+import { useMobileLayout, useStaticMotion } from "../hooks/useStaticMotion";
 
 let hasOpened = false;
 const names = [
@@ -12,12 +13,18 @@ const names = [
 
 export default function Hero({ onDownloadResume }) {
   const hero = useRef(null);
-  const [opening, setOpening] = useState(() => !hasOpened && !window.location.hash &&
-    window.scrollY === 0 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const staticMotion = useStaticMotion();
+  const mobile = useMobileLayout();
+  const [opening, setOpening] = useState(() => !staticMotion && !hasOpened &&
+    !window.location.hash && window.scrollY === 0);
 
   useLayoutEffect(() => {
     hasOpened = true;
     if (!opening) return;
+    if (staticMotion) {
+      setOpening(false);
+      return;
+    }
 
     const section = hero.current;
     const bounds = section.getBoundingClientRect();
@@ -35,20 +42,20 @@ export default function Hero({ onDownloadResume }) {
     });
 
     const finish = () => setOpening(false);
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const skipEvents = ["pointerdown", "keydown", "scroll", "resize"];
-    skipEvents.forEach(type => window.addEventListener(type, finish, { passive: true, once: true }));
-    media.addEventListener("change", finish);
+    const viewportWidth = window.innerWidth;
+    const skipOnScroll = () => { if (window.scrollY !== 0) finish(); };
+    const skipOnResize = () => { if (window.innerWidth !== viewportWidth) finish(); };
+    const interrupts = { pointerdown: finish, keydown: finish, scroll: skipOnScroll, resize: skipOnResize };
+    Object.entries(interrupts).forEach(([type, handler]) => window.addEventListener(type, handler, { passive: true }));
     const timer = window.setTimeout(finish, 1700);
     return () => {
       clearTimeout(timer);
-      skipEvents.forEach(type => window.removeEventListener(type, finish));
-      media.removeEventListener("change", finish);
+      Object.entries(interrupts).forEach(([type, handler]) => window.removeEventListener(type, handler));
     };
-  }, [opening]);
+  }, [opening, staticMotion]);
 
   return (
-    <section ref={hero} className="folio-hero" data-opening={opening || undefined} aria-labelledby="intro-name">
+    <section ref={hero} className={mobile ? "folio-hero folio-hero-text-only" : "folio-hero"} data-opening={opening || undefined} aria-labelledby="intro-name">
       <div className="intro-copy">
         <p className="folio-meta">{personalInfo.currentRole}</p>
         <h1 id="intro-name" aria-label="Gunvanth Madabattula">
@@ -69,7 +76,7 @@ export default function Hero({ onDownloadResume }) {
           <button className="folio-link" onClick={onDownloadResume}>Résumé <ArrowDownToLine size={14} /></button>
         </div>
       </div>
-      <Refraction />
+      {!mobile && <Refraction />}
     </section>
   );
 }

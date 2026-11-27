@@ -34,6 +34,7 @@
   min-height: calc(100svh - var(--folio-nav-height));
   padding: clamp(26px, 4vh, 60px) var(--folio-gutter);
 }
+.folio-hero-text-only { grid-template-columns: 1fr; align-content: center; }
 .folio-meta, .project-domain, .refraction figcaption { font: 500 13px/1.35 "Barlow", Arial, sans-serif; }
 .folio-meta { margin-bottom: clamp(20px, 3.4vh, 42px); }
 .intro-copy h1, .folio-section-head h2, .about-section > h2, .contact-section h2, .detail-title {
@@ -151,13 +152,11 @@
 .App :focus-visible { outline: 2px solid var(--pf-accent); outline-offset: 3px; }
 @media (max-width: 760px) {
   :root { --folio-nav-height: 58px; }
-  .folio-hero { grid-template-columns: 1fr; align-content: space-evenly; gap: 12px; padding-block: 18px 24px; }
+  .folio-hero { padding-block: 18px 24px; }
   .intro-copy h1 { font-size: clamp(52px, 16.1vw, 118px); }
   .folio-meta { margin-bottom: 15px; }
   .intro-text { margin-top: 16px; }
   .intro-actions { margin-top: 16px; }
-  .refraction canvas { height: clamp(134px, 33svh, 72vw); }
-  .refraction figcaption { margin-inline: 0; font-size: 12px; }
   .project-row { grid-template-columns: 1fr 25px; gap: 4px 12px; padding: 16px 0; }
   .project-domain { grid-column: 1; }
   .project-open { grid-column: 2; grid-row: 1 / span 2; }
@@ -166,9 +165,7 @@
   .contact-layout { grid-template-columns: 1fr; gap: 30px; }
 }
 @media (max-width: 760px) and (max-height: 650px) {
-  .folio-hero { padding-block: 12px 16px; gap: 8px; }
-  .refraction canvas { height: 28svh; }
-  .refraction figcaption { margin-top: 4px; padding-top: 6px; }
+  .folio-hero { padding-block: 12px 16px; }
 }
 @media (min-width: 761px) and (max-height: 520px) {
   .folio-hero { padding-block: 12px; }
@@ -178,7 +175,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .prism-hint { display: none; }
   .App *, .App *::before, .App *::after { animation: none !important; transition: none !important; }
 }
 .folio-detail { padding: 36px 0 64px; }
