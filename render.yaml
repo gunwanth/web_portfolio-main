@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: gunvanth-portfolio
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/
+    envVars:
+      - key: SERVE_STATIC_FRONTEND
+        value: "true"
+      - key: PORT
+        value: "8000"
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: DB_NAME
+        value: "portfolio_db"
+      - key: MONGO_URL
+        sync: false
+      - key: SMTP_EMAIL
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: RECIPIENT_EMAIL
+        sync: false

@@ -104,3 +104,16 @@ docker run -d -p 8000:8000 --env-file backend/.env --name web-portfolio web-port
 ```
 
 Then open `http://localhost:8000`. Note: if you are not running a separate MongoDB instance, pass `MONGO_URL` pointing to your MongoDB URI (or leave it unset to run without database persistence).
+
+### Cloud Web Deployment (Render / Railway / GHCR)
+Deploy the unified Docker container (`Dockerfile`) directly to the web:
+
+- **Render (1-Click Blueprint via `render.yaml`)**: [Deploy to Render](https://render.com/deploy?repo=https://github.com/gunwanth/web_portfolio-main)
+- **Railway (Dockerfile config via `railway.json`)**: [Deploy on Railway](https://railway.app/new/template?template=https://github.com/gunwanth/web_portfolio-main)
+- **GitHub Container Registry (GHCR)**: Pushes to `main` automatically build and publish `ghcr.io/gunwanth/web_portfolio-main:latest` via `.github/workflows/docker-publish.yml`:
+  ```sh
+  docker pull ghcr.io/gunwanth/web_portfolio-main:latest
+  docker run -d -p 8000:8000 ghcr.io/gunwanth/web_portfolio-main:latest
+  ```
+  Configure optional `MONGO_URL`, `SMTP_EMAIL`, `SMTP_PASSWORD`, and `RECIPIENT_EMAIL` environment variables in your hosting dashboard for MongoDB persistence and contact form email delivery.
+
