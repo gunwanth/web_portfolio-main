@@ -72,4 +72,35 @@ Production build / host static app
   ```sh
   cd frontend
   npm run build
+  ```
+
+Docker Deployment (No Vercel)
+-----------------------------
+You can run the full stack in Docker without Vercel using either the multi-container Compose stack or the unified single-container image.
+
+### Option A: Full Stack with Docker Compose (Recommended)
+Runs three containers:
+- **frontend** (`nginx:alpine` on port `3000`): serves the production React build and proxies `/api/*` requests to `backend`.
+- **backend** (FastAPI on port `8000`): handles contact submissions, email notifications, and resume downloads.
+- **mongo** (`mongo:7`): persists contact submissions in the `mongo_data` volume.
+
+1. Ensure `backend/.env` is configured (see `backend/.env.example`) for SMTP credentials if you want email notifications. Docker Compose automatically sets `MONGO_URL` to `mongodb://mongo:27017` inside the container network.
+2. Build and start all services:
+   ```sh
+   docker compose up --build -d
+   ```
+3. Open `http://localhost:3000` in your browser (or check API health at `http://localhost:3000/api/`).
+4. Stop the stack when finished:
+   ```sh
+   docker compose down
+   ```
+
+### Option B: Unified Single-Container Build
+Ideal for single-container hosts (Railway, Render, Fly.io, Cloud Run, Coolify, or standalone `docker run`). The root `Dockerfile` builds the React app and serves both the static frontend and `/api/*` endpoints from FastAPI (`SERVE_STATIC_FRONTEND=true`).
+
+```sh
+docker build -t web-portfolio .
+docker run -d -p 8000:8000 --env-file backend/.env --name web-portfolio web-portfolio
 ```
+
+Then open `http://localhost:8000`. Note: if you are not running a separate MongoDB instance, pass `MONGO_URL` pointing to your MongoDB URI (or leave it unset to run without database persistence).

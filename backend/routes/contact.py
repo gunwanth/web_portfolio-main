@@ -55,8 +55,14 @@ async def submit_contact_form(contact: ContactSubmissionCreate, request: Request
     - Implements rate limiting
     """
     try:
-        # Get client IP for rate limiting
-        client_ip = request.client.host
+        # Get client IP for rate limiting (honor proxy header behind Nginx)
+        forwarded_for = request.headers.get("x-forwarded-for")
+        if forwarded_for:
+            client_ip = forwarded_for.split(",")[0].strip()
+        elif request.client:
+            client_ip = request.client.host
+        else:
+            client_ip = "unknown"
 
         # Check rate limit
         if not check_rate_limit(client_ip):

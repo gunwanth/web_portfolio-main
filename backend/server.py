@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Request, Response
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 import os
@@ -57,19 +58,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-async def home():
-    return {
-        "status": "ok",
-        "message": "Gunvanth Portfolio API is running"
-    }
-
+FRONTEND_BUILD_DIR = ROOT_DIR.parent / "frontend" / "build"
 FRONTEND_FAVICON_PATH = ROOT_DIR.parent / "frontend" / "public" / "favicon.ico"
+SERVE_STATIC_FRONTEND = os.environ.get("SERVE_STATIC_FRONTEND", "").lower() in ("1", "true", "yes")
+STATIC_FRONTEND_READY = SERVE_STATIC_FRONTEND and (FRONTEND_BUILD_DIR / "index.html").exists()
+
+if not STATIC_FRONTEND_READY:
+    @app.get("/")
+    async def home():
+        return {
+            "status": "ok",
+            "message": "Gunvanth Portfolio API is running"
+        }
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
-    if FRONTEND_FAVICON_PATH.exists():
-        return FileResponse(path=str(FRONTEND_FAVICON_PATH), media_type="image/x-icon")
+    for candidate in (FRONTEND_BUILD_DIR / "favicon.ico", FRONTEND_FAVICON_PATH):
+        if candidate.exists():
+            return FileResponse(path=str(candidate), media_type="image/x-icon")
     return Response(status_code=204)
 
 # --------------------------------------------------
@@ -119,6 +125,34 @@ async def get_status_checks():
 app.include_router(api_router)
 app.include_router(contact_router)
 app.include_router(resume_router)
+
+if STATIC_FRONTEND_READY:
+    static_dir = FRONTEND_BUILD_DIR / "static"
+    if static_dir.exists():
+        app.mount("/static", StaticFiles(directory=str(static_dir)), name="frontend-static")
+
+    build_root = FRONTEND_BUILD_DIR.resolve()
+    index_html = build_root / "index.html"
+
+    @app.get("/", include_in_schema=False)
+    async def serve_spa_root():
+        return FileResponse(path=str(index_html))
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa_paths(full_path: str):
+        if full_path == "api" or full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Not Found")
+
+        candidate = (build_root / full_path).resolve()
+        try:
+            candidate.relative_to(build_root)
+            is_within_build = True
+        except ValueError:
+            is_within_build = False
+
+        if is_within_build and candidate.is_file():
+            return FileResponse(path=str(candidate))
+        return FileResponse(path=str(index_html))
 
 # --------------------------------------------------
 # Logging

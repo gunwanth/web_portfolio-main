@@ -1,0 +1,10 @@
+.venv
+venv
+__pycache__
+*.pyc
+node_modules
+.env
+.env.*
+!.env.example
+email_test.py
+scratch_test_pwd.py
